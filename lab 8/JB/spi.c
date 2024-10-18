@@ -28,6 +28,8 @@ void SPI_Init(void)
     SPI_Enable();
 }
 
+
+
 void SPI_GPIO(void)
 {
 	//define PIN setup for SCK, MOSI, MISO, CS_GPIO
@@ -40,35 +42,29 @@ void SPI_GPIO(void)
 	SCK_GPIO->AFR[0] &= ~(0x0F<<(SCK_PIN*4));
 	SCK_GPIO->AFR[0] |=  (0x05<<(SCK_PIN*4)); //set for AF5
 	
-	MISO_GPIO->MODER &= ~(0x03<<(2*MISO_PIN));
-	MISO_GPIO->MODER |=  (0x02<<(2*MISO_PIN));
-	MISO_GPIO->AFR[0] &= ~(0x0F<<(MISO_PIN*4));
-	MISO_GPIO->AFR[0] |=  (0x05<<(MISO_PIN*4)); //set for AF5
-	
 	MOSI_GPIO->MODER &= ~(0x03<<(2*MOSI_PIN));
 	MOSI_GPIO->MODER |=  (0x02<<(2*MOSI_PIN));
 	MOSI_GPIO->AFR[0] &= ~(0x0F<<(MOSI_PIN*4));
 	MOSI_GPIO->AFR[0] |=  (0x05<<(MOSI_PIN*4)); //set for AF5
 	
-	CS_GPIO->MODER &= ~(0x03<<(2*CS_PIN));
-	CS_GPIO->MODER |=  (0x02<<(2*CS_PIN));
-	CS_GPIO->AFR[0] &= ~(0x0F<<(CS_PIN*4));
-	CS_GPIO->AFR[0] |=  (0x05<<(CS_PIN*4)); //set for AF5
-	
 	RCC->APB2ENR |= 1 << 12;	// enable SPI1 Clock
-
-    CS_Low();
 }
+
+
 
 void SPI_Disable(void)
 {
    SPI1->CR1 &= ~(1 << 6);
 }
 
+
+
 void SPI_Enable(void)
 {
    SPI1->CR1 |= 1 << 6;
 }
+
+
 
 void SPI_Transmit(uint8_t *data, uint8_t size)
 {
@@ -95,15 +91,6 @@ void SPI_Transmit(uint8_t *data, uint8_t size)
     temp = SPI1->SR;
 }
 
-void CS_Low(void)
-{
-    CS_GPIO->ODR &= ~(1 << CS_PIN);
-}
-
-void CS_High(void)
-{
-    CS_GPIO->ODR |= 1 << CS_PIN;
-}
 /*******************************************************************************/
 /*******************************************************************************/
 
