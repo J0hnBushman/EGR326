@@ -16,11 +16,11 @@ int main(void)
 		SPI_Init();
 	__enable_irq();
 	
-	SevenSeg_Push_16Bit(0x0A02);
+
 	
       while (1)
     {
-			
+				SevenSeg_Push_16Bit(0x0A02);
     }
 }
 
