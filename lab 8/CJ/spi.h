@@ -19,6 +19,8 @@
 #define MOSI_GPIO GPIOA
 #define MOSI_PIN 7
 
+#define CS_GPIO GPIOA
+#define CS_PIN 4
 
 /*******************************************************************************/
 /*******************************************************************************/
@@ -49,6 +51,14 @@ void SPI_Enable(void);
 /// @param data is data byte array to transmit
 /// @param size is length of data byte array
 void SPI_Transmit(uint8_t *data, uint8_t size);
+
+/// @brief Pulls chip select I/O line low
+void CS_Low(void);
+
+/// @brief Pulls chip select I/O line high
+void CS_High(void);
+
+void SPI1_write(unsigned char data);
 
 /*******************************************************************************/
 /*******************************************************************************/
