@@ -15,13 +15,7 @@ void SPI_Init(void)
 
     RCC->APB2ENR |= 1 << 12;
 
-    SPI1->CR1 |= (1 << 2); // Master mode
-    SPI1->CR1 |= (7 << 0); // Baud rate psc
-
-    SPI1->CR1 &= ~(1 << 7);           // Ensuring MSB transmit first
-    SPI1->CR1 |= (1 << 8) | (1 << 9); // Allows any pin to be Chip Sel
-
-    SPI1->CR1 &= ~((1 << 10) | (1 << 11)); // Full duplex, 8-bit data
+		SPI1->CR1 |=0x31C;
 
     SPI1->CR2 = 0; // Not using anything here (DMA and Interrupts)
 
@@ -40,10 +34,6 @@ void SPI_GPIO(void)
 	SCK_GPIO->AFR[0] &= ~(0x0F<<(SCK_PIN*4));
 	SCK_GPIO->AFR[0] |=  (0x05<<(SCK_PIN*4)); //set for AF5
 	
-	MISO_GPIO->MODER &= ~(0x03<<(2*MISO_PIN));
-	MISO_GPIO->MODER |=  (0x02<<(2*MISO_PIN));
-	MISO_GPIO->AFR[0] &= ~(0x0F<<(MISO_PIN*4));
-	MISO_GPIO->AFR[0] |=  (0x05<<(MISO_PIN*4)); //set for AF5
 	
 	MOSI_GPIO->MODER &= ~(0x03<<(2*MOSI_PIN));
 	MOSI_GPIO->MODER |=  (0x02<<(2*MOSI_PIN));
@@ -68,6 +58,16 @@ void SPI_Disable(void)
 void SPI_Enable(void)
 {
    SPI1->CR1 |= 1 << 6;
+}
+
+void SPI1_write(unsigned char data)
+{
+	while(!(SPI1->SR & 2)){}
+	GPIOA->BSRR = 0x00100000;
+	SPI1->DR = data;
+	while (SPI1->SR & 0x80){} //wait for transmission complete
+	GPIOA->BSRR = 0x00000010; //deassert slave select
+	
 }
 
 void SPI_Transmit(uint8_t *data, uint8_t size)
@@ -108,3 +108,5 @@ void CS_High(void)
 /*******************************************************************************/
 
 /* EOF */
+
+

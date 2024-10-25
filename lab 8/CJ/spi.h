@@ -16,9 +16,6 @@
 #define SCK_GPIO GPIOA
 #define SCK_PIN 5
 
-#define MISO_GPIO GPIOA
-#define MISO_PIN 6
-
 #define MOSI_GPIO GPIOA
 #define MOSI_PIN 7
 
@@ -60,6 +57,9 @@ void CS_Low(void);
 
 /// @brief Pulls chip select I/O line high
 void CS_High(void);
+
+void SPI1_write(unsigned char data);
+
 /*******************************************************************************/
 /*******************************************************************************/
 
