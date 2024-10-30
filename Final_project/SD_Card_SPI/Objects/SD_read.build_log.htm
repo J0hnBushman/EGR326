@@ -1,0 +1,345 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.38.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Charles Norton
+GVSU
+User-based license: Keil MDK Community (non-commercial free of charge)
+Valid until: May 31 2033. Cached until: Oct 30 2024
+ 
+Tool Versions:
+Toolchain:       Keil MDK Community (non-commercial free of charge  Version: 5.38.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.19
+Assembler:       Armasm.exe V6.19
+Linker/Locator:  ArmLink.exe V6.19
+Library Manager: ArmAr.exe V6.19
+Hex Converter:   FromElf.exe V6.19
+CPU DLL:         SARMCM3.DLL V5.38.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.1.0.0
+Dialog DLL:      TCM.DLL V1.56.4.0
+ 
+<h2>Project:</h2>
+C:\Users\xchar\OneDrive\Documents\GVSU_ARCHIVE\Fall_2024\EGR_326_903\EGR326\Final_project\SD_Card_SPI\SD_read.uvprojx
+Project File Date:  10/25/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Target 1'
+compiling main.c...
+SD.c(33): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+1 warning generated.
+compiling SD.c...
+RTE/CMSIS/RTX_Conf_CM.c(300): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/RTOS/RTX/INC\RTX_CM_lib.h(404): warning: cast from 'int (*)(void)' to 'os_pthread' (aka 'void (*)(const void *)') converts to incompatible function type [-Wcast-function-type]
+const osThreadDef_t os_thread_def_main = {(os_pthread)main, osPriorityNormal, 1U, 4*OS_MAINSTKSIZE };
+                                          ^~~~~~~~~~~~~~~~
+1 warning generated.
+compiling RTX_Conf_CM.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/CMSIS/Driver/SPI_STM32F4xx.c(193): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/CMSIS/Driver/SPI_STM32F4xx.h(58): error: "SPI not configured in RTE_Device.h!"
+    #error "SPI not configured in RTE_Device.h!"
+     ^
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/CMSIS/Driver/SPI_STM32F4xx.c(193): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/CMSIS/Driver/SPI_STM32F4xx.h(34): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(397): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+1 warning and 1 error generated.
+compiling SPI_STM32F4xx.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c(215): warning: function 'HAL_NVIC_SystemReset' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c(81): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(401): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_cortex.h(52): warning: padding struct 'MPU_Region_InitTypeDef' with 2 bytes to align 'BaseAddress' [-Wpadded]
+  uint32_t               BaseAddress;           /*!< Specifies the base address of the region to protect.                           */
+                         ^
+2 warnings generated.
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling EventRecorder.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(97): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(397): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(289): warning: cast from function call of type 'uint32_t' (aka 'unsigned int') to non-matching type 'DMA_Base_Registers *' [-Wbad-function-cast]
+  regs = (DMA_Base_Registers *)DMA_CalcBaseAndBitshift(hdma);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(351): warning: cast from function call of type 'uint32_t' (aka 'unsigned int') to non-matching type 'DMA_Base_Registers *' [-Wbad-function-cast]
+  regs = (DMA_Base_Registers *)DMA_CalcBaseAndBitshift(hdma);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(977): warning: enumeration value 'HAL_DMA_XFER_ALL_CB_ID' not explicitly handled in switch [-Wswitch-enum]
+    switch (CallbackID)
+            ^~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(1073): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+    default:
+    ^
+5 warnings generated.
+compiling stm32f4xx_hal_dma.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c(39): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(397): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+1 warning generated.
+compiling stm32f4xx_hal_dma_ex.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c(379): warning: unused parameter 'Regulator' [-Wunused-parameter]
+void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
+                                     ^
+1 warning generated.
+compiling stm32f4xx_hal_pwr.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_rcc.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c(23): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(385): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_rcc.h(31): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h(121): warning: padding size of 'RCC_PeriphCLKInitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+1 warning generated.
+compiling stm32f4xx_hal_rcc_ex.c...
+assembling startup_stm32f446xx.s...
+compiling system_stm32f4xx.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(200): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(509): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_spi.h(134): warning: padding struct 'struct __SPI_HandleTypeDef' with 2 bytes to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< SPI Error code                           */
+                             ^
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(200): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...
+./RTE/Device/STM32F446RETx\stm32f4xx_hal_conf.h(397): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(839): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      hspi->Instance->DR = *((uint16_t *)hspi->pTxBuffPtr);
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(849): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        hspi->Instance->DR = *((uint16_t *)hspi->pTxBuffPtr);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1039): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)hspi->Instance->DR;
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1073): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)hspi->Instance->DR;
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1213): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      hspi->Instance->DR = *((uint16_t *)hspi->pTxBuffPtr);
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1222): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        hspi->Instance->DR = *((uint16_t *)hspi->pTxBuffPtr);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1240): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)hspi->Instance->DR;
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1285): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+        (*(uint8_t *)hspi->pRxBuffPtr) = hspi->Instance->DR;
+                                       ~ ~~~~~~~~~~~~~~~~^~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3222): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)(hspi->Instance->DR);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3278): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  hspi->Instance->DR = *((uint16_t *)hspi->pTxBuffPtr);
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3393): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)(hspi->Instance->DR);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3452): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  hspi->Instance->DR = *((uint16_t *)hspi->pTxBuffPtr);
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+14 warnings generated.
+compiling stm32f4xx_hal_spi.c...
+RTE/File_System/FS_Config.c(78): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/MDK-Middleware/7.16.0/FileSystem/Include\fs_config.h(356): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/MDK-Middleware/7.16.0/FileSystem/Include/fs_os.h(19): warning: In file included from...
+C:/Users/xchar/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/RTOS/RTX/INC\cmsis_os.h(73): warning: '__NO_RETURN' macro redefined [-Wmacro-redefined]
+#define __NO_RETURN __attribute__((noreturn))
+        ^
+C:/Users/xchar/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include/cmsis_armclang.h(46): note: previous definition is here
+  #define __NO_RETURN                            __attribute__((__noreturn__))
+          ^
+1 warning generated.
+compiling FS_Config.c...
+compiling FS_Debug.c...
+C:/Users/xchar/AppData/Local/Arm/Packs/Keil/ARM_Compiler/1.7.2/Source/retarget_io.c(409): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  \return    The return value is <96>1 if an error occurs.
+                                 ^
+1 warning generated.
+compiling retarget_io.c...
+".\Objects\SD_read.axf" - 1 Error(s), 29 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM.CMSIS.5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: SPI Version: 2.3.0
+   * Component: RTOS Version: 1.0.0
+   * Component: CORE Version: 5.6.0
+   * Component: Keil RTX Version: 4.82.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.ARM_Compiler.1.7.2.pack
+                Keil.ARM_Compiler.1.7.2
+                Keil ARM Compiler extensions for ARM Compiler 5 and ARM Compiler 6
+   * Component: Event Recorder Variant: DAP Version: 1.5.1
+   * Component: File Variant: File System Version: 1.2.0
+   * Component: STDERR Variant: ITM Version: 1.2.0
+   * Component: STDIN Variant: ITM Version: 1.2.0
+   * Component: STDOUT Variant: ITM Version: 1.2.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.MDK-Middleware.7.16.0.pack
+                Keil.MDK-Middleware.7.16.0
+                Middleware for Keil MDK-Professional and MDK-Plus
+   * Component: CORE Variant: LFN Debug Version: 6.15.3
+   * Component: Memory Card Version: 6.15.3
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32F4xx_DFP.2.17.1.pack
+                Keil.STM32F4xx_DFP.2.17.1
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+   * Component: STM32Cube Framework Version: 1.0.0
+   * Component: SPI Version: 2.18
+   * Component: Classic Version: 1.8.1
+   * Component: Common Version: 1.8.1
+   * Component: Cortex Version: 1.8.1
+   * Component: DMA Version: 1.8.1
+   * Component: GPIO Version: 1.8.1
+   * Component: PWR Version: 1.8.1
+   * Component: RCC Version: 1.8.1
+   * Component: SPI Version: 1.8.1
+   * Component: Startup Version: 2.6.3
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/Compiler
+  ./RTE/Device/STM32F446RETx
+  ./RTE/File_System
+  ./RTE/_Target_1
+  C:/Users/xchar/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  C:/Users/xchar/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Driver/Include
+  C:/Users/xchar/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/RTOS/RTX/INC
+  C:/Users/xchar/AppData/Local/Arm/Packs/Keil/ARM_Compiler/1.7.2/Include
+  C:/Users/xchar/AppData/Local/Arm/Packs/Keil/MDK-Middleware/7.16.0/FileSystem/Include
+  C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+  C:/Users/xchar/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/STM32F4xx_HAL_Driver/Inc
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ::CMSIS Driver:SPI:2.3.0 (API)
+      Include file:  CMSIS/Driver/Include/Driver_SPI.h
+
+   * Component: ::CMSIS:RTOS:1.0.0 (API)
+
+   * Component: ::Device:STM32Cube Framework:1.0.0 (API)
+
+   * Component: ARM::CMSIS:CORE:5.6.0
+
+   * Component: ARM::CMSIS:RTOS:Keil RTX:4.82.0
+      Include file:  CMSIS/RTOS/RTX/UserCodeTemplates/osObjects.h
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/main.c
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/Mutex.c
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/MemPool.c
+      Source file:   CMSIS/RTOS/RTX/Templates/RTX_Conf_CM.c
+      Include file:  CMSIS/RTOS/RTX/INC/cmsis_os.h
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/MsgQueue.c
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/Semaphore.c
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/MailQueue.c
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/Timer.c
+      Source file:   CMSIS/RTOS/RTX/SRC/ARM/SVC_Table.s
+      Source file:   CMSIS/RTOS/RTX/UserCodeTemplates/Thread.c
+      Library file:  CMSIS/RTOS/RTX/LIB/ARM/RTX_CM4.lib
+
+   * Component: Keil.ARM Compiler::Compiler:Event Recorder:DAP:1.5.1
+      Include file:  Include/EventRecorder.h
+      Source file:   Source/EventRecorder.c
+      Include file:  Config/EventRecorderConf.h
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:File:File System:1.2.0
+      Source file:   Source/retarget_io.c
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDERR:ITM:1.2.0
+      Source file:   Source/retarget_io.c
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDIN:ITM:1.2.0
+      Source file:   Source/retarget_io.c
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:ITM:1.2.0
+      Source file:   Source/retarget_io.c
+
+   * Component: Keil.MDK-Plus::File System:CORE:LFN Debug:6.15.3
+      Include file:  FileSystem/Include/rl_fs.h
+      Library file:  FileSystem/Lib/ARM/FS_Dbg_LFN_CM3_L.lib
+      Source file:   FileSystem/Config/FS_Debug.c
+      Source file:   FileSystem/Config/FS_Config.c
+
+   * Component: Keil.MDK-Plus::File System:Drive:Memory Card:6.15.3
+      Include file:  FileSystem/Config/FS_Config_MC.h
+
+   * Component: Keil::CMSIS Driver:SPI:2.18
+      Source file:   CMSIS/Driver/SPI_STM32F4xx.c
+
+   * Component: Keil::Device:STM32Cube Framework:Classic:1.8.1
+      Include file:  MDK/Templates/Inc/stm32f4xx_hal_conf.h
+      Include file:  MDK/Templates/Inc/stm32f4xx_it.h
+      Source file:   MDK/Templates/Src/stm32f4xx_it.c
+      Include file:  MDK/Templates/Inc/main.h
+      Source file:   MDK/Templates/Src/main.c
+      Include file:  MDK/Templates_LL/Inc/main.h
+      Source file:   MDK/Templates_LL/Src/main.c
+      Source file:   MDK/Templates/Src/stm32f4xx_hal_msp.c
+      Include file:  CMSIS/Driver/Config/RTE_Device.h
+
+   * Component: Keil::Device:STM32Cube HAL:Common:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
+      Include file:  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
+
+   * Component: Keil::Device:STM32Cube HAL:Cortex:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
+
+   * Component: Keil::Device:STM32Cube HAL:DMA:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
+
+   * Component: Keil::Device:STM32Cube HAL:GPIO:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
+
+   * Component: Keil::Device:STM32Cube HAL:PWR:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
+
+   * Component: Keil::Device:STM32Cube HAL:RCC:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
+
+   * Component: Keil::Device:STM32Cube HAL:SPI:1.8.1
+      Source file:   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c
+
+   * Component: Keil::Device:Startup:2.6.3
+      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f446xx.s
+      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
+      Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
+      Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
+      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
+Target not created.
+Build Time Elapsed:  00:00:04
+</pre>
+</body>
+</html>
