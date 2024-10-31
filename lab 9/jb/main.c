@@ -10,6 +10,7 @@
 #include <stm32f446xx.h>
 #include <stdio.h>
 #include "stepper.h"
+#include "I2C.h"
 
 #define BP1 ((GPIOC->IDR)&(1<<13))	
 #define BP2 ((GPIOC->IDR)&(1<<12))
@@ -30,6 +31,7 @@ int main(void)
 	GPIO_init();
 	stepper_init();
 	systick_init();
+	I2C_init();
 	
   while (1){
 		if(flag == 1){

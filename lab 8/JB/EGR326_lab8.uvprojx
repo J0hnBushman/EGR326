@@ -48,14 +48,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>lab9</OutputName>
+          <OutputDirectory>.\</OutputDirectory>
+          <OutputName>EGR326_lab8</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\Listings\</ListingPath>
+          <ListingPath>.\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -390,24 +390,14 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>stepper.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\stepper.h</FilePath>
-            </File>
-            <File>
-              <FileName>stepper.c</FileName>
+              <FileName>spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\stepper.c</FilePath>
+              <FilePath>.\spi.c</FilePath>
             </File>
             <File>
-              <FileName>I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\I2C.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C.h</FileName>
+              <FileName>spi.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\I2C.h</FilePath>
+              <FilePath>.\spi.h</FilePath>
             </File>
           </Files>
         </Group>
