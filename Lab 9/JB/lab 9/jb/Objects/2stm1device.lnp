@@ -1,0 +1,11 @@
+--cpu=Cortex-M4.fp.sp
+".\objects\maintwo.o"
+".\objects\i2c.o"
+".\objects\kp.o"
+".\objects\retarget_io.o"
+".\objects\startup_stm32f446xx.o"
+".\objects\system_stm32f4xx.o"
+--strict --scatter ".\Objects\2stm1device.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\2stm1device.map" -o .\Objects\2stm1device.axf
