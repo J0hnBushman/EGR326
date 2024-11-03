@@ -1,0 +1,66 @@
+#ifndef __rotary_encoder_h__
+#define __rotary_encoder_h__
+#include "stm32f446xx.h"
+
+
+/* Used for MODER */
+#define INPUT  (0x00)
+#define OUTPUT (0x01)
+#define ALT_F  (0x02)
+#define ANALOG (0x03)
+
+/* Used for PUPDR */
+#define PULLUP   (0x01)
+#define PULLDOWN (0x02)
+
+/* Used for ODR */
+#define ON   1
+#define OFF  0
+
+#define HIGH 1
+#define LOW  0
+
+#define ONBOARD_LED_PIN         		 (5)
+#define ONBOARD_LED_PORT      		   (GPIOA)
+#define ONBOARD_LED_OUT(X)     		   ( (X)? (ONBOARD_LED_PORT->ODR |= (1UL << ONBOARD_LED_PIN)) : (ONBOARD_LED_PORT->ODR &= ~(1UL << ONBOARD_LED_PIN)) )
+#define IS_HIGH_ONBOARD_LED				   (ONBOARD_LED_PORT->ODR & (1UL << ONBOARD_LED_PIN))?1:0
+#define ONBOARD_LED_TOGGLE     		   (ONBOARD_LED_PORT->ODR ^= (1UL << ONBOARD_LED_PIN))
+#define ONBOARD_LED_MODER(X)         (ONBOARD_LED_PORT->MODER &= ~ (0x03UL<<(2*ONBOARD_LED_PIN))); (ONBOARD_LED_PORT->MODER |= (X<<(2*ONBOARD_LED_PIN)))
+#define ONBOARD_LED_IN               (ONBOARD_LED_PORT->IDR& 1UL << ONBOARD_LED_PIN)
+#define ONBOARD_LED_PUPDR(X)         (ONBOARD_LED_PORT->PUPDR &= ~(0x03UL<<(2*ONBOARD_LED_PIN))); (ONBOARD_LED_PORT->PUPDR |= X<<(2*ONBOARD_LED_PIN))
+
+#define ENC_CLK_PIN         		 (0)
+#define ENC_CLK_PORT      		   (GPIOA)
+#define ENC_CLK_OUT(X)     		   ( (X)? (ENC_CLK_PORT->ODR |= (1UL << ENC_CLK_PIN)) : (ENC_CLK_PORT->ODR &= ~(1UL << ENC_CLK_PIN)) )
+#define IS_HIGH_ENC_CLK				   (ENC_CLK_PORT->ODR & (1UL << ENC_CLK_PIN))?1:0
+#define ENC_CLK_TOGGLE     		   (ENC_CLK_PORT->ODR ^= (1UL << ENC_CLK_PIN))
+#define ENC_CLK_MODER(X)         (ENC_CLK_PORT->MODER &= ~ (0x03UL<<(2*ENC_CLK_PIN))); (ENC_CLK_PORT->MODER |= (X<<(2*ENC_CLK_PIN)))
+#define ENC_CLK_IN               (ENC_CLK_PORT->IDR& 1UL << ENC_CLK_PIN)
+#define ENC_CLK_PUPDR(X)         (ENC_CLK_PORT->PUPDR &= ~(0x03UL<<(2*ENC_CLK_PIN))); (ENC_CLK_PORT->PUPDR |= X<<(2*ENC_CLK_PIN))
+
+#define ENC_DT_PIN         		 (1)
+#define ENC_DT_PORT      		   (GPIOA)
+#define ENC_DT_OUT(X)     		   ( (X)? (ENC_DT_PORT->ODR |= (1UL << ENC_DT_PIN)) : (ENC_DT_PORT->ODR &= ~(1UL << ENC_DT_PIN)) )
+#define IS_HIGH_ENC_DT				   (ENC_DT_PORT->ODR & (1UL << ENC_DT_PIN))?1:0
+#define ENC_DT_TOGGLE     		   (ENC_DT_PORT->ODR ^= (1UL << ENC_DT_PIN))
+#define ENC_DT_MODER(X)         (ENC_DT_PORT->MODER &= ~ (0x03UL<<(2*ENC_DT_PIN))); (ENC_DT_PORT->MODER |= (X<<(2*ENC_DT_PIN)))
+#define ENC_DT_IN               (ENC_DT_PORT->IDR& 1UL << ENC_DT_PIN)
+#define ENC_DT_PUPDR(X)         (ENC_DT_PORT->PUPDR &= ~(0x03UL<<(2*ENC_DT_PIN))); (ENC_DT_PORT->PUPDR |= X<<(2*ENC_DT_PIN))
+
+#define ONBOARD_PUSHBUTTON_PIN         		 (13)
+#define ONBOARD_PUSHBUTTON_PORT      		   (GPIOC)
+#define ONBOARD_PUSHBUTTON_OUT(X)     		   ( (X)? (ONBOARD_PUSHBUTTON_PORT->ODR |= (1UL << ONBOARD_PUSHBUTTON_PIN)) : (ONBOARD_PUSHBUTTON_PORT->ODR &= ~(1UL << ONBOARD_PUSHBUTTON_PIN)) )
+#define IS_HIGH_ONBOARD_PUSHBUTTON				   (ONBOARD_PUSHBUTTON_PORT->ODR & (1UL << ONBOARD_PUSHBUTTON_PIN))?1:0
+#define ONBOARD_PUSHBUTTON_TOGGLE     		   (ONBOARD_PUSHBUTTON_PORT->ODR ^= (1UL << ONBOARD_PUSHBUTTON_PIN))
+#define ONBOARD_PUSHBUTTON_MODER(X)         (ONBOARD_PUSHBUTTON_PORT->MODER &= ~ (0x03UL<<(2*ONBOARD_PUSHBUTTON_PIN))); (ONBOARD_PUSHBUTTON_PORT->MODER |= (X<<(2*ONBOARD_PUSHBUTTON_PIN)))
+#define ONBOARD_PUSHBUTTON_IN               (ONBOARD_PUSHBUTTON_PORT->IDR& 1UL << ONBOARD_PUSHBUTTON_PIN)
+#define ONBOARD_PUSHBUTTON_PUPDR(X)         (ONBOARD_PUSHBUTTON_PORT->PUPDR &= ~(0x03UL<<(2*ONBOARD_PUSHBUTTON_PIN))); (ONBOARD_PUSHBUTTON_PORT->PUPDR |= X<<(2*ONBOARD_PUSHBUTTON_PIN))
+
+
+
+void Encoder_TIM_init(void);
+void Encoder_init(void);
+
+
+
+#endif
