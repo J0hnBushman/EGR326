@@ -10,7 +10,6 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -49,7 +48,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>EGR326_lab6</OutputName>
+          <OutputName>lab10</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -260,17 +259,17 @@
                 <Size>0x0</Size>
               </XRAM>
               <OCR_RVCT1>
-                <Type>1</Type>
+                <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT1>
               <OCR_RVCT2>
-                <Type>1</Type>
+                <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT2>
               <OCR_RVCT3>
-                <Type>1</Type>
+                <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT3>
@@ -280,7 +279,7 @@
                 <Size>0x80000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
-                <Type>1</Type>
+                <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT5>
@@ -362,7 +361,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>0</umfTarg>
+            <umfTarg>1</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -383,148 +382,6 @@
       <Groups>
         <Group>
           <GroupName>Source Group 1</GroupName>
-          <Files>
-            <File>
-              <FileName>bitmap_typedefs.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\bitmap_typedefs.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_firacode_regular_14.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_firacode_regular_14.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_fixedsys_mono_16.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_fixedsys_mono_16.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_fixedsys_mono_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_fixedsys_mono_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_freemono_mono_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_freemono_mono_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_freemono_mono_bold_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_freemono_mono_bold_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_microsoft_16.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_microsoft_16.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_ubuntu_48.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_ubuntu_48.h</FilePath>
-            </File>
-            <File>
-              <FileName>font_ubuntu_mono_24.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\font_ubuntu_mono_24.h</FilePath>
-            </File>
-            <File>
-              <FileName>ILI9341.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\ILI9341.h</FilePath>
-            </File>
-            <File>
-              <FileName>my_photos.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\my_photos.h</FilePath>
-            </File>
-            <File>
-              <FileName>RccConfig.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\RccConfig.h</FilePath>
-            </File>
-            <File>
-              <FileName>spi.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\spi.h</FilePath>
-            </File>
-            <File>
-              <FileName>ILI9341.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ILI9341.c</FilePath>
-            </File>
-            <File>
-              <FileName>RccConfig.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\RccConfig.c</FilePath>
-            </File>
-            <File>
-              <FileName>spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>testmain.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\testmain.c</FilePath>
-            </File>
-            <File>
-              <FileName>hall.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\hall.h</FilePath>
-            </File>
-            <File>
-              <FileName>hall.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\hall.c</FilePath>
-            </File>
-            <File>
-              <FileName>TIMERS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\TIMERS.c</FilePath>
-            </File>
-            <File>
-              <FileName>TIMERS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\TIMERS.h</FilePath>
-            </File>
-            <File>
-              <FileName>stepper.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\stepper.c</FilePath>
-            </File>
-            <File>
-              <FileName>stepper.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\stepper.h</FilePath>
-            </File>
-            <File>
-              <FileName>I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\I2C.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\I2C.h</FilePath>
-            </File>
-            <File>
-              <FileName>main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\main.h</FilePath>
-            </File>
-            <File>
-              <FileName>rotary_encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\rotary_encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>rotary_encoder.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\rotary_encoder.h</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

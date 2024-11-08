@@ -80,6 +80,7 @@ void Draw_String_NoBG(uint16_t x, uint16_t y, char *str, uint16_t fore_color, co
     }
 }
 
+
 void Draw_Char_BG(uint16_t x, uint16_t y, char character, uint16_t fore_color, uint16_t back_color, const tFont *font)
 {
     const tImage *img = NULL;
