@@ -399,6 +399,16 @@
               <FileType>5</FileType>
               <FilePath>.\Sonar.h</FilePath>
             </File>
+            <File>
+              <FileName>stepper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stepper.c</FilePath>
+            </File>
+            <File>
+              <FileName>stepper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\stepper.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

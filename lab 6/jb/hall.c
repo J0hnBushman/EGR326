@@ -14,13 +14,20 @@
 		RCC->AHB1ENR |= (1<<2);
 		
 		HALL_MODER(0);
+		HALL2_MODER(0);
 		
 		SYSCFG->EXTICR[3] &= ~(0xF<<4);
 		SYSCFG->EXTICR[3] |=  (0x1<<4);
+		SYSCFG->EXTICR[3] &= ~(0xF);
+		SYSCFG->EXTICR[3] |=  (0x1);
 		
 		EXTI->IMR  |=  (1<<HALL_PIN);
 		EXTI->FTSR |=  (1<<HALL_PIN);
 		EXTI->RTSR &=~ (1<<HALL_PIN);
+		
+		EXTI->IMR  |=  (1<<HALL2_PIN);
+		EXTI->FTSR |=  (1<<HALL2_PIN);
+		EXTI->RTSR &=~ (1<<HALL2_PIN);
 		
 		NVIC_EnableIRQ(EXTI15_10_IRQn);
 	}

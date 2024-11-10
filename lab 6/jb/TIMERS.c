@@ -47,5 +47,5 @@ void timer_init(void){
 	TIM4->CCER |= 0x03; /* enable CH1 compare mode and sets to caputre as an input on both edges */
 	TIM4->CNT = 0; /* clear counter */
 	TIM4->CR1 = 1; /* enable TIM5 */
-	
+
 }

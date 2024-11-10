@@ -10,37 +10,35 @@ DESCRIPTION:
 /*********************************************************************************
 																				LIBRARIES
 *********************************************************************************/
-#include "ILI9341.h"
-#include "RccConfig.h"
-#include "font_ubuntu_mono_24.h"
-#include "font_freemono_mono_bold_24.h"
-#include "my_photos.h"
-#include "spi.h"
-#include "I2C.h"
-#include "rotary_encoder.h"
 #include "main.h"
-#include "hall.h"
-#include "TIMERS.h"
-#include "stepper.h"
-#include <stdlib.h>
-#include <stm32f446xx.h>
-#include <stdio.h>
-
 
 /*********************************************************************************
 																				Global Variables
 *********************************************************************************/
-uint8_t flag_closed = 1;
+uint8_t hall_FLAG = 1;
+uint8_t hall2_FLAG = 1;
 uint8_t swPress = 0; 
+uint8_t foodCount = 0; 
 int last = 0;
 int current; 
 double period; 
 int pos = 0;
 char value = 0;
 char timeDate[14];
-uint8_t tmp = 0; //temp value to create a blue highlight value
 
+//inital screen 
+int menu = startUpScreen; 
+//init state
+int state = content;
 
+uint8_t tmp = 0; 
+//temp value to create a blue highlight value
+
+//RTC_data and point
+char RTC_data;
+char *RTC_Data_ptr = &RTC_data;
+
+//RTC VALUES
 uint8_t RTC_Hour;
 uint8_t RTC_Minute;
 uint8_t RTC_Second;
@@ -50,7 +48,8 @@ uint8_t RTC_Month;
 uint8_t RTC_Date;
 uint8_t RTC_Day;
 
-uint8_t time_flag = 1;
+uint8_t menu_flag = 1;
+
 
 
 
@@ -72,14 +71,70 @@ int main(void)
 	
 	__enable_irq();
 	
-		//Start up Screen
-		MENU_SCREENS(startUpScreen);
-	
       while (1)
     {
-			MENU_SCREENS(timMenu); //displays the timer menu options, currently workin on this 
-    }
+			switch(state){
+//----------------------------content------------------------------
+				case(content):
+				default:
+					menu = ExpContent;
+					if(hall_FLAG){
+						state = feeding; 
+					}
+					
+					break;
+				
+				
+//------------------------------HAPPY--------------------------------
+				case(happy):
+					menu = ExpHappy;
+				
+					break;
+
+				
+//-----------------------------HUNGRY-----------------------------------
+				case(hungry):
+					menu = ExpHungry;
+				
+								
+					break;
+				
+				
+//-------------------------------SLEEPY---------------------------------
+				case(sleepy):
+					menu = ExpSleepy;
+				
+					break;
+				
+		
+//-------------------------------DEAD---------------------------------
+				case(dead):
+					menu = ExpDead;
+				
+					break;
+				
+				
+//-------------------------------FEEDING---------------------------------
+				case(feeding):
+					menu = ExpFeeding;
+				
+				while(hall_FLAG){
+				MENU_SCREENS();
+				}
+					state = content;
+					break;
+			}
+			
+			
+			MENU_SCREENS(); //displays the timer menu options, currently workin on this 
+			//**NOTE** THIS HAS A LOT OF WHILE LOOPS SO IMMA NEED TO GO BACK AND 
+			
+			
+		}
 }
+
+
+
 
 
 
@@ -95,13 +150,31 @@ int main(void)
 		//hall_flag = 1;
 
 		if(EXTI->PR & 1<<HALL_PIN){
-				if((HALL_IN) && flag_closed == 1){
-					flag_closed = 0; 
-				}else if((HALL_IN) == 0 && flag_closed == 0){
-					flag_closed = 1; 
+			foodCount ++;
+			
+				if((HALL_IN) && hall_FLAG == 1){
+					hall_FLAG = 0; 
+				}else if((HALL_IN) == 0 && hall_FLAG == 0){
+					hall_FLAG = 1; 
 				}
+				
 			}
-		EXTI->PR |= (1<<HALL_PIN);
+		
+			if(EXTI->PR & 1<<HALL2_PIN){
+			
+				if((HALL2_IN) && hall2_FLAG == 1){
+					hall2_FLAG = 0; 
+				}else if((HALL2_IN) == 0 && hall2_FLAG == 0){
+					hall2_FLAG = 1; 
+				}
+				
+			}
+			
+		if(EXTI->PR & 1<<BTN1_PIN){
+			
+		}
+			
+		EXTI->PR |= (1<<HALL_PIN)|(1<<BTN1_PIN)|(1<<HALL2_PIN);
 }
 	
 
@@ -114,13 +187,62 @@ int main(void)
 	void EXTI4_IRQHandler(void){
 		swPress ++;
 		
-		if(swPress%4 == 0){
-			TIM2->CNT = pos*2; //keeps the current position value 
-			
-			
+		
+		//***TIME SET MENU ****
+		if(menu == timMenu){
+				//used to display the correct value when moving cursor in menu
+			if(swPress%4 == 0){
+					TIM2->CNT = pos*2; //keeps the current position value 
+			}else{
+					TIM2->CNT = value*2; //keeps current value 
+			}
+		
+			if(pos == 13){
+				menu_flag = 0;
+			}
+		
+			if(pos == 12){
+				menu_flag = 0;
+				RTC_Second = 0; //these should probably be the current value, not zero but I'll have to change it afer more testing
+				RTC_Minute = 0;
+				RTC_Hour = 0;
+				RTC_Date = 0;
+				RTC_Month = 0;
+				RTC_Year = 0;
+			}
+	}
+		
+		//****MAIN MENU*****
+	if(menu == mainMenu){
+		menu_flag = 0;
+		if(pos == 0){
+			menu = timMenu;
+		}else if(pos == 1){
+			menu = helpMenu;
 		}else{
-			TIM2->CNT = value*2; //keeps current value 
+			menu = infoMenu;
 		}
+	}
+	
+	//****HELP MENU******
+	if(menu == helpMenu){
+		menu_flag = 0;
+	}
+	
+	//****INFO MENU******
+	if(menu == infoMenu){
+		menu_flag = 0;
+	}
+	
+	if(menu == startUpScreen){
+		menu_flag = 0;
+	}
+	
+	if(menu == settings){
+		menu_flag = 0; 
+	}
+	
+	
 		EXTI->PR |= (1<<4);
 }
 	
@@ -185,6 +307,48 @@ void Set_Date(uint8_t RTC_Year, uint8_t RTC_Month, uint8_t RTC_Date){
 	
 
 
+/*===========================================================================================
+// READ Date
+
+ * @brief: Prompts the user to set the registers of the RTC controlling the month, day, year and date
+ * 
+ * @param[in] NULL
+ * 
+ * @return: NULL
+ ===========================================================================================*/
+void Read_Date(void){
+	//read the current hour from the RTC, stores value in the RTC_data pointer
+	I2C1_byteRead(SLAVE_ADDR, HOURS_ADDR, RTC_Data_ptr);
+	Draw_Char_BG(10, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(20, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(30, 5, ':', WHITE, BLACK, &font_ubuntu_mono_24);
+	//read the current min from the RTC, stores value in the RTC_data pointer
+	I2C1_byteRead(SLAVE_ADDR, MINUTES_ADDR, RTC_Data_ptr);
+	Draw_Char_BG(40, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(50, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(60, 5, ':', WHITE, BLACK, &font_ubuntu_mono_24);
+	//read the current second from the RTC, stores value in the RTC_data pointer
+	I2C1_byteRead(SLAVE_ADDR, SECONDS_ADDR, RTC_Data_ptr);
+	Draw_Char_BG(70, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(80, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+		//read the current hour from the RTC, stores value in the RTC_data pointer
+	I2C1_byteRead(SLAVE_ADDR, HOURS_ADDR, RTC_Data_ptr);
+	Draw_Char_BG(190, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(200, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(210, 5, '/', WHITE, BLACK, &font_ubuntu_mono_24);
+	//read the current min from the RTC, stores value in the RTC_data pointer
+	I2C1_byteRead(SLAVE_ADDR, MINUTES_ADDR, RTC_Data_ptr);
+	Draw_Char_BG(220, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(230, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(240, 5, '/', WHITE, BLACK, &font_ubuntu_mono_24);
+	//read the current second from the RTC, stores value in the RTC_data pointer
+	I2C1_byteRead(SLAVE_ADDR, SECONDS_ADDR, RTC_Data_ptr);
+	Draw_Char_BG(250, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(260, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+}
+
+
+
 
 /*===========================================================================================
 // Set Date and date
@@ -196,7 +360,6 @@ void Set_Date(uint8_t RTC_Year, uint8_t RTC_Month, uint8_t RTC_Date){
  * @return: NULL
  ===========================================================================================*/
 void Set_TD(void){
-	uint8_t btn = 0;
 	/*FOR REFERENCE:
 		-Sec 		0,1
 		-Min 		2,3
@@ -208,40 +371,42 @@ void Set_TD(void){
 		-Enter	13
 	
 	*/
+	TIM2->ARR = 27;
 	
-	while(time_flag){
-		
+	while(menu_flag){
 		//set up position to change based on the interupt from the rotary encoder
 		//I want to set this such that when the btn on Rotary is pressed the interupt no longer changes position but changes value
 		//this should be the math to cahnge this, I have to do this instead of using a flag due to the inturrtp counting twice
+		
 		if(swPress%4 == 0){
-			tmp = pos;
-			pos = TIM2->CNT/2;
-			value = timeDate[pos];
+				tmp = pos;
+				pos = TIM2->CNT/2;
+				value = timeDate[pos];
 			if(pos != tmp){
-				Draw_Char_BG(180+((tmp%2)*20), 60+((pos/2)*20), (timeDate[tmp] + '0'), BLACK, WHITE, &font_ubuntu_mono_24);
+				if(tmp<=11){
+					Draw_Char_BG(180+((tmp%2)*20), 30+((tmp/2)*30), (timeDate[tmp] + '0'), BLACK, WHITE, &font_ubuntu_mono_24);
+				}else if(tmp == 12){
+					Draw_String_BG(20, 210, "Cancel", BLACK, WHITE, &font_ubuntu_mono_24);
+				}else{
+					Draw_String_BG(180, 210, "Enter", BLACK, WHITE, &font_ubuntu_mono_24);
+				}
+				
 			}
 		}else{
-			value = TIM2->CNT/2;
-			timeDate[pos] = value;
-			}
-		
-		Draw_Char_BG(180+((pos%2)*20), 60+((pos/2)*20), (value + '0'), BLACK, BLUE, &font_ubuntu_mono_24);
-		
-		
-		if(pos == 13 && btn){
-			time_flag = 0;
+				value = TIM2->CNT/2;
+				timeDate[pos] = value;
 		}
-		if(pos == 12 && btn){
-				time_flag = 0;
-				RTC_Second = 0; //these should probably be the current value, not zero but I'll have to change it afer more testing
-				RTC_Minute = 0;
-				RTC_Hour = 0;
-				RTC_Date = 0;
-				RTC_Month = 0;
-				RTC_Year = 0;
+		
+		//PRINTS THE CURRENT POSITION AND VALUE 
+		if(pos<=11){
+			Draw_Char_BG(180+((pos%2)*20), 30+((pos/2)*30), (value + '0'), BLACK, BLUE, &font_ubuntu_mono_24);
+		}else if(pos == 12){
+			Draw_String_BG(20, 210, "Cancel", BLACK, BLUE, &font_ubuntu_mono_24);
+		}else{
+			Draw_String_BG(180, 210, "Enter", BLACK, BLUE, &font_ubuntu_mono_24);
 		}
-	}
+		
+	}						
 	
 	RTC_Second = timeDate[0]<<4 | timeDate[1];
 	RTC_Minute = timeDate[2]<<4 | timeDate[3];
@@ -252,6 +417,7 @@ void Set_TD(void){
 	
 	Set_Time(RTC_Hour, RTC_Minute, RTC_Second);
 	Set_Date(RTC_Year, RTC_Month, RTC_Date);
+	
 }
 
 
@@ -260,39 +426,70 @@ void Set_TD(void){
 
 
 /*===========================================================================================
-// Set Date and date
+// MENU SCREENS
 
- * @brief: Prompts the user to set the registers of the RTC controlling the month, day, year and date
+ * @brief: DISPLAYS DIFFERENT MENU OPTIONS AND SCREEN FOR DIFFERENT STATES IN THE PROGRAM
  * 
  * @param[in] NULL
  * 
  * @return: NULL
  ===========================================================================================*/
-void MENU_SCREENS(int menu){
+void MENU_SCREENS(void){
+	
 				switch(menu){
+
+//--------------------------MAIN MENU-----------------------------
 				case mainMenu:
 					default:
-							Draw_String_BG(20, 120, "Time Set:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 140, "Help:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 160, "More Info:", BLACK, WHITE, &font_ubuntu_mono_24);
-					for(int i = 0; i < 60000; i ++);
-					menu = timMenu;
-					Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-					break;
+							menu_flag = 1;
+							Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+								TIM2->CNT = 0; 
+								pos = 0;
+						TIM2->ARR = 5;
+							while(menu_flag){
+								Read_Date();
+								pos = TIM2->CNT/2; //set position
+								
+								if(pos == 0){
+							Draw_String_BG(40, 80, "Time Set:", BLACK, BLUE, &font_ubuntu_mono_24);
+							Draw_String_BG(40, 120, "Help:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(40, 160, "More Info:", BLACK, WHITE, &font_ubuntu_mono_24);
+								}else if(pos == 1){
+							Draw_String_BG(40, 80, "Time Set:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(40, 120, "Help:", BLACK, BLUE, &font_ubuntu_mono_24);
+							Draw_String_BG(40, 160, "More Info:", BLACK, WHITE, &font_ubuntu_mono_24);
+								}else{
+							Draw_String_BG(40, 80, "Time Set:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(40, 120, "Help:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(40, 160, "More Info:", BLACK, BLUE, &font_ubuntu_mono_24);
+								}
+							}
+				break;
 					
-				case timMenu:
-							Draw_String_BG(20, 60, "Set Day:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 90, "Set Month:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 120, "Set Year:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 150, "Set Min:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 180, "Set hour:", BLACK, WHITE, &font_ubuntu_mono_24);
+							
+//--------------------TIME SET MENU-------------------------------
+				case timMenu:	
+					menu_flag = 1; 
+							Fill_Rect(12, 30, 288, 226, WHITE);
+							Draw_String_BG(20, 30, "Set Second:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 60, "Set Minute:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 90, "Set Hour:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 120, "Set date:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 150, "Set Month:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 180, "Set Year:", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 210, "Cancel", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 210, "Enter", BLACK, WHITE, &font_ubuntu_mono_24);
 				
+				
+				
+							Draw_String_BG(180, 30, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 60, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 90, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 120, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 150, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 180, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 				
+							Draw_String_BG(200, 30, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(200, 60, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(200, 90, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 							Draw_String_BG(200, 120, "0", BLACK, WHITE, &font_ubuntu_mono_24);
@@ -300,44 +497,101 @@ void MENU_SCREENS(int menu){
 							Draw_String_BG(200, 180, "0", BLACK, WHITE, &font_ubuntu_mono_24);
 				
 							Set_TD();
-				//menu = helpMenu;
-				//Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-				
+				menu = mainMenu;
+				menu_flag = 1;
 					break;
 				
-				
+//--------------------------------HELP MENU------------------------------------------
 				case helpMenu:
-						Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+					Read_Date();
+					menu_flag = 1;
+					TIM2->ARR = 3;
+						Fill_Rect(12, 30, 288, 226, WHITE);//Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+						while(menu_flag){
 							Draw_String_BG(20, 120, "HELP MENU SCREEN", BLACK, WHITE, &font_ubuntu_mono_24);
-					for(int i = 0; i < 60000; i ++);
-					menu = infoMenu;
-				Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+							Draw_String_BG(20, 160, "Press to contiune", BLACK, WHITE, &font_ubuntu_mono_24);
+						}
+						menu = mainMenu;
 				break;
 				
 				
+//------------------------------------INFO MENU---------------------------------------
 				case infoMenu:
-						Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+					Read_Date();
+					menu_flag = 1; 
+						Fill_Rect(12, 30, 288, 226, WHITE);  //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+						while(menu_flag){
 							Draw_String_BG(20, 120, "INFO MENU SCREEN:", BLACK, WHITE, &font_ubuntu_mono_24);
-					for(int i = 0; i < 60000; i ++);
-					menu = mainMenu;
-				Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+							Draw_String_BG(20, 160, "Press to contiune", BLACK, WHITE, &font_ubuntu_mono_24);
+						}
+						menu = mainMenu;
 				break;
 				
+				
+//-------------------------------------START UP SCREEN------------------------------------
 				case startUpScreen:
+					menu_flag = 1;
+					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*
 					Rotate_Display(1); //landscape inverted
 					Draw_Bitmap((TFT_WIDTH - testImage->width) / 2, (TFT_HEIGHT - testImage->height) / 2, testImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
 						delayMS(3000);
 						Fill_Screen(BLACK);
-						Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+				while(menu_flag){}
+				menu = mainMenu;
+				break;
+				
+				
+//-----------------------------------------SETTINGS-----------------------------------------
+				case settings:
+					menu_flag = 1;
+					TIM2->ARR = 3;
+								TIM2->CNT = 0; 
+								pos = 0;
+					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+					Draw_String_BG(20, 80, "Open Settings?", BLACK, WHITE, &font_ubuntu_mono_24);
+					while(menu_flag){
+						
+						Draw_String_BG(20, 120, "Yes", BLACK, WHITE, &font_ubuntu_mono_24);
+					}
+					break;
+					
+					
+//-----------------------------------------CONTENT-----------------------------------------
+				case ExpContent:
+					Fill_Rect(12, 30, 288, 226, BLUE);
 					break;
 				
-				case settings:
-					Fill_Rect(10, 50, 280, 140, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-					Draw_String_BG(20, 80, "Open Settings?", BLACK, WHITE, &font_ubuntu_mono_24);
-					Draw_String_BG(20, 120, "Yes       No", BLACK, WHITE, &font_ubuntu_mono_24);
-					for(int i = 0; i < 60000; i ++);
+				
+//-----------------------------------------HAPPY-----------------------------------------
+				case ExpHappy:
+					Fill_Rect(12, 30, 288, 226, GREEN);
 					break;
+				
+				
+//-----------------------------------------HUNGRY-----------------------------------------
+				case ExpHungry:
+					Fill_Rect(12, 30, 288, 226, BRIGHT_TEAL);
+					break;
+				
+				
+//-----------------------------------------SLEEPY-----------------------------------------
+				case ExpSleepy:
+					Fill_Rect(12, 30, 288, 226, SKY_BLUE);
+					break;
+				
+				
+//-----------------------------------------DEAD-----------------------------------------
+				case ExpDead:
+					Fill_Rect(12, 30, 288, 226, GRAY);
+					break;
+				
+//-----------------------------------------feeding----------------------------------------
+				case ExpFeeding:
+					Fill_Rect(12, 30, 288, 226, PURPLE);
+					break;
+				
 			}
+				
 }
 
 

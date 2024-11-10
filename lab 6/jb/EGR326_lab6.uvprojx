@@ -524,6 +524,16 @@
               <FileType>5</FileType>
               <FilePath>.\rotary_encoder.h</FilePath>
             </File>
+            <File>
+              <FileName>btn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\btn.c</FilePath>
+            </File>
+            <File>
+              <FileName>btn.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\btn.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

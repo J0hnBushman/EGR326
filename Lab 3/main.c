@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Sonar.h"
+#include "stepper.h"
 
 
 //global variables
@@ -24,6 +25,9 @@ int main(void)
 	
 	while(1){
 		distance = dist();
+		if(distance <200){
+			//BI_stepper_forward_step();
+		}
 	}
 }
 
