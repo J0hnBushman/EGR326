@@ -51,7 +51,7 @@
 
 
 void init_ShiftRegister(void);
-void init_Health_Timer(void);
+uint8_t HealthCurrent(void);
 uint8_t HealthMinusMinus(void);
 uint8_t HealthPlusPlus(void);
 void HealthClear(void);
@@ -59,6 +59,10 @@ void HealthClear(void);
 void PulseClock(void);
 
 void HealthMax(void);
+
+void tim5_init(void);
+
+void TIM5_IRQHandler(void);
 
 void SysTick_Init(void);
 void delayMS(uint16_t n);

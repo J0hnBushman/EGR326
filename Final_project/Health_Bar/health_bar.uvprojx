@@ -399,6 +399,26 @@
               <FileType>5</FileType>
               <FilePath>.\health_bar.h</FilePath>
             </File>
+            <File>
+              <FileName>TIMERS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TIMERS.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIMERS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\TIMERS.c</FilePath>
+            </File>
+            <File>
+              <FileName>Flash_Access.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Flash_Access.h</FilePath>
+            </File>
+            <File>
+              <FileName>Flash_Access.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Flash_Access.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

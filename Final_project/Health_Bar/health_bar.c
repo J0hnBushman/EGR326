@@ -1,4 +1,5 @@
 #include "health_bar.h"
+#include "stdbool.h"
 
 /*
 3 pins control the operation of the 74HC595 Shift Register:
@@ -36,9 +37,12 @@ Q0	Q1	Q2	Q3	Q4	Q5	Q6	Q7 |
 R		R		O		O		Y		Y		G		G  |
 _______________________________|
 
+
+100ohm resistors for all Leds except Green
+68ohm resistors for Green
 */
 
-static uint8_t health = 5;
+static uint8_t health = 8;
 
 void init_ShiftRegister(void){
 	
@@ -54,9 +58,32 @@ void init_ShiftRegister(void){
 	
 }
 
-void init_Health_Timer(void){
+uint8_t HealthCurrent(void){
+	
+	uint8_t i;
+	HealthClear();
+	
+	CLOCK_OUT(LOW);
+	LATCH_OUT(LOW);
+	CLOCK_OUT(HIGH);
 	
 	
+	for(i=0;i<health;i++)
+	{
+		CLOCK_OUT(LOW);
+		
+		DATA_OUT(HIGH);
+		
+		CLOCK_OUT(HIGH);
+		
+
+	}
+	
+	CLOCK_OUT(LOW);
+	LATCH_OUT(HIGH);
+	CLOCK_OUT(HIGH);
+	
+	return 1;
 	
 }
 
@@ -164,7 +191,6 @@ void HealthClear(void){
 		
 		CLOCK_OUT(HIGH);
 		
-
 	}
 	
 	CLOCK_OUT(LOW);
@@ -197,4 +223,27 @@ void delayMicroS(uint16_t n)
     while ((SysTick->CTRL & 0x00010000) == 0)
     {
     }
+}
+
+void tim5_init(void){
+		/////setting up TIM5_ch1 on GPIO B pin 4 as a timer interupt 
+	//Setting the pin to AF2
+	
+	RCC->APB1ENR |= (1<<3);
+	TIM5->PSC = 16000 - 1; 
+	TIM5->ARR = 60000 - 1;
+	TIM5->CNT = 0; /* clear counter */
+	TIM5->CR1 = 1; /* enable TIM5 */
+	TIM5->CR1	=   0x0001U;
+	TIM5->DIER =   0x0001U;
+	TIM5->SR	&= ~0x01U;
+	//NVIC_SetPriority(TIM5_IRQn, 0);
+	NVIC_EnableIRQ(TIM5_IRQn);
+	
+}
+
+void TIM5_IRQHandler(void)
+{
+	TIM5->SR &= ~0x0001U;
+	HealthMinusMinus();
 }

@@ -3,8 +3,10 @@
 
 int main(void){
 	SysTick_Init();
+	tim5_init();
 	init_ShiftRegister();
-	HealthPlusPlus();
+	//HealthPlusPlus();
+	HealthCurrent();
 	while(1){
 		
 	}
