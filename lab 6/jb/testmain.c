@@ -533,8 +533,8 @@ void MENU_SCREENS(void){
 					menu_flag = 1;
 					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*
 					Rotate_Display(1); //landscape inverted
-					Draw_Bitmap((TFT_WIDTH - testImage->width) / 2, (TFT_HEIGHT - testImage->height) / 2, testImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
-						delayMS(3000);
+					//Draw_Bitmap((TFT_WIDTH - testImage->width) / 2, (TFT_HEIGHT - testImage->height) / 2, testImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+						//delayMS(3000);
 						Fill_Screen(BLACK);
 				while(menu_flag){}
 				menu = mainMenu;
@@ -558,8 +558,10 @@ void MENU_SCREENS(void){
 					
 //-----------------------------------------CONTENT-----------------------------------------
 				case ExpContent:
-					Fill_Rect(12, 30, 288, 226, BLUE);
-					break;
+					Rotate_Display(0);
+					Draw_Bitmap((TFT_WIDTH - testImage->width) / 2, (TFT_HEIGHT - testImage->height) / 2, testImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+					Fill_Rect(10, 10, 30, 30, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+				break;
 				
 				
 //-----------------------------------------HAPPY-----------------------------------------
