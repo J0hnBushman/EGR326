@@ -24,3 +24,14 @@ double Read_ADC(void){
 	result = raw*VREF/pow(2,N); /* decode from binary to decimal ADC readout */	
 	return result;
 	}
+
+int map(int Input, int In_Min, int In_Max, int Out_Min, int Out_Max){
+	int m = 0;
+	int y = 0;
+	
+	m = (Out_Max-Out_Min)/(In_Max-In_Min);
+	
+	y = ((m*Input) - (m*In_Min)) + Out_Min;
+	
+	return y;
+}
