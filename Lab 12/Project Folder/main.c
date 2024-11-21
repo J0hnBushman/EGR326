@@ -31,6 +31,7 @@ int main (void) {
 	
  while (1) {
 		value = Read_ADC();
+	 	TIM5->CCR1 = ((TIM5->ARR+1)*((double)value/10.0));
 	}
 }
 
@@ -43,6 +44,20 @@ int main (void) {
  RCC->AHB1ENR |= 4; /* enable GPIOC clock */
  GPIOA->MODER |= 0xC; /* PA1 analog */
  
+ // configure PA0 as output to drive the LED AF2
+GPIOA->MODER &= ~0x00000003; /* clear pin mode */
+GPIOA->MODER |= 0x00000002; /* set pin to alternate function */
+GPIOA->AFR[0] &=~0x0000000F; /* clear pin AF bits */
+GPIOA->AFR[0] |= 0x2; /* set pin to AF1 for TIM2 CH1 */
+
+
+RCC->APB1ENR |= 1<<3; /* enable TIM5 clock */
+TIM5->PSC = 160 - 1; /* divided by 160 */
+TIM5->ARR = 100 - 1; /* divided by 100 */
+TIM5->CCMR1 = 0x60; /* set output to PWM mode */
+TIM5->CCER |= 0x01; /* enable CH1 compare mode */
+TIM5->CNT = 0; /* clear counter */
+TIM5->CR1 = 1; /* enable TIM2 */
  }
  
  

@@ -3,6 +3,11 @@
 #include <math.h>
 #include <stdio.h>
 
+#define In_Min 50.0
+#define In_Max 4025.0
+#define Out_Min 0.0
+#define Out_Max 10.0
+
 uint8_t N=12;
 
  void adc_init(void){
@@ -16,13 +21,18 @@ uint8_t N=12;
  ADC1->CR2 |= 1; /* enable ADC1 */
  }
  
-double Read_ADC(void){
+int Read_ADC(void){
+	double m = (Out_Max-Out_Min)/(In_Max-In_Min);
 	uint16_t raw;
-	double result = 0;
+	int result = 0;
 	
 	while(!(ADC1->SR & 2)) {} /* wait for conv complete */
 	raw=ADC1->DR &0xFFF; /* read conversion result */
-	printf("%d\n", raw);
-	result = raw*VREF/pow(2,N); /* decode from binary to decimal ADC readout */	
+
+		printf("Raw: %d\t\t", raw);
+	//result = raw*VREF/pow(2,N); /* decode from binary to decimal ADC readout */	
+	result = ((m*raw)-(m*In_Min))+Out_Min;
+		
+		printf("Value: %d\n", result);
 	return result;
 	}
