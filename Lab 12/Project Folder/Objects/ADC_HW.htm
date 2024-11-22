@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\ADC_HW.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\ADC_HW.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Fri Nov 22 12:40:14 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Fri Nov 22 13:41:50 2024
 <BR><P>
 <H3>Maximum Stack Usage =        324 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1532,7 +1532,7 @@ Global Symbols
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stdout_putchar
 </UL>
 
-<P><STRONG><a name="[f6]"></a>Read_ADC</STRONG> (Thumb, 224 bytes, Stack size 56 bytes, adc.o(.text.Read_ADC))
+<P><STRONG><a name="[f6]"></a>Read_ADC</STRONG> (Thumb, 240 bytes, Stack size 56 bytes, adc.o(.text.Read_ADC))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200 + Unknown Stack Size
 <LI>Call Chain = Read_ADC &rArr; printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -1665,7 +1665,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_Init
 </UL>
 
-<P><STRONG><a name="[101]"></a>display_adc</STRONG> (Thumb, 60 bytes, Stack size 24 bytes, main.o(.text.display_adc))
+<P><STRONG><a name="[101]"></a>display_adc</STRONG> (Thumb, 100 bytes, Stack size 24 bytes, main.o(.text.display_adc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = display_adc &rArr; Draw_Char_BG &rArr; Draw_Pixel &rArr; Set_Address_Window &rArr; ILI_Push_16Bit &rArr; ILI_8Bit_Data &rArr; SPI_Transmit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Draw_Char_BG

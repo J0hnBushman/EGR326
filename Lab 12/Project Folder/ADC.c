@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 #define In_Min 50.0
-#define In_Max 4025.0
+#define In_Max 2500.0
 #define Out_Min 0.0
-#define Out_Max 10.0
+#define Out_Max 9.0
 
 uint8_t N=12;
 
@@ -25,7 +25,7 @@ uint8_t Read_ADC(void){
 	double m = (Out_Max-Out_Min)/(In_Max-In_Min);
 	uint16_t raw;
 	int result = 0;
-	
+	ADC1->CR2 |= 0x40000000; /* start a conversion */
 	while(!(ADC1->SR & 2)) {} /* wait for conv complete */
 	raw=ADC1->DR &0xFFF; /* read conversion result */
 

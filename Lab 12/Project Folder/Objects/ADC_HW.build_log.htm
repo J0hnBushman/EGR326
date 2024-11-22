@@ -30,7 +30,55 @@ Project File Date:  11/22/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-".\Objects\ADC_HW.axf" - 0 Error(s), 0 Warning(s).
+main.c(9): warning: In file included from...
+./ILI9341.h(11): warning: In file included from...
+./spi.h(68): warning: no newline at end of file [-Wnewline-eof]
+/* EOF */
+         ^
+main.c(17): warning: In file included from...
+./ADC.h(12): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+main.c(20): warning: no previous extern declaration for non-static variable 'flag' [-Wmissing-variable-declarations]
+bool flag = false;
+     ^
+main.c(20): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+bool flag = false;
+^
+C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h(15): note: expanded from macro 'bool'
+    #define bool _Bool
+                 ^
+main.c(28): warning: no previous extern declaration for non-static variable 'Center' [-Wmissing-variable-declarations]
+point Center = {(TFT_WIDTH/2),(TFT_HEIGHT/2)-25};
+      ^
+main.c(28): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+point Center = {(TFT_WIDTH/2),(TFT_HEIGHT/2)-25};
+^
+main.c(36): warning: no previous extern declaration for non-static variable 'value' [-Wmissing-variable-declarations]
+uint8_t value = 0;
+        ^
+main.c(36): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+uint8_t value = 0;
+^
+main.c(53): warning: implicit conversion turns floating-point number into integer: 'double' to 'uint32_t' (aka 'unsigned int') [-Wfloat-conversion]
+                TIM5->CCR1 = ((TIM5->ARR+1)*((double)value/10.0));
+                           ~  ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+main.c(73): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+GPIOA->MODER &= ~0x00000003; /* clear pin mode */
+             ~~ ^~~~~~~~~~~
+main.c(75): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+GPIOA->AFR[0] &=~0x0000000F; /* clear pin AF bits */
+              ~~^~~~~~~~~~~
+main.c(9): warning: In file included from...
+./ILI9341.h(10): warning: In file included from...
+./bitmap_typedefs.h(18): warning: padding size of 'tImage' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+9 warnings generated.
+compiling main.c...
+linking...
+Program Size: Code=16416 RO-data=7572 RW-data=20 ZI-data=1888  
+".\Objects\ADC_HW.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -73,12 +121,12 @@ Package Vendor: Keil
       Source file:   Source/retarget_io.c
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
-      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
+      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f446xx.s
       Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
       Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
-      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f446xx.s
-Build Time Elapsed:  00:00:00
+      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
+      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
