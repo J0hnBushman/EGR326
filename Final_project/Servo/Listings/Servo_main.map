@@ -5,10 +5,10 @@ Component: Arm Compiler for Embedded 6.22 Tool: armlink [5ee90200]
 Section Cross References
 
     main.o(.text.main) refers to servo.o(.text.TIM_GPIO) for TIM_GPIO
-    main.o(.text.main) refers to servo.o(.text.TIM2_setup) for TIM2_setup
+    main.o(.text.main) refers to servo.o(.text.TIM1_setup) for TIM1_setup
     main.o(.text.main) refers to main.o(.bss.i) for i
     main.o(.ARM.exidx.text.main) refers to main.o(.text.main) for [Anonymous Symbol]
-    servo.o(.ARM.exidx.text.TIM2_setup) refers to servo.o(.text.TIM2_setup) for [Anonymous Symbol]
+    servo.o(.ARM.exidx.text.TIM1_setup) refers to servo.o(.text.TIM1_setup) for [Anonymous Symbol]
     servo.o(.ARM.exidx.text.TIM_GPIO) refers to servo.o(.text.TIM_GPIO) for [Anonymous Symbol]
     retarget_io.o(.ARM.exidx.text.ITM_SendChar) refers to retarget_io.o(.text.ITM_SendChar) for [Anonymous Symbol]
     retarget_io.o(.text.ITM_ReceiveChar) refers to retarget_io.o(.data.ITM_RxBuffer) for ITM_RxBuffer
@@ -161,7 +161,7 @@ Removing Unused input sections from the image.
     Removing main.o(.ARM.exidx.text.main), (8 bytes).
     Removing main.o(.ARM.use_no_argv), (4 bytes).
     Removing servo.o(.text), (0 bytes).
-    Removing servo.o(.ARM.exidx.text.TIM2_setup), (8 bytes).
+    Removing servo.o(.ARM.exidx.text.TIM1_setup), (8 bytes).
     Removing servo.o(.ARM.exidx.text.TIM_GPIO), (8 bytes).
     Removing retarget_io.o(.text), (0 bytes).
     Removing retarget_io.o(.text.ITM_SendChar), (66 bytes).
@@ -325,8 +325,8 @@ Image Symbol Table
     .text                                    0x0800032c   Section        2  use_no_semi.o(.text)
     .text                                    0x0800032e   Section        0  indicate_semi.o(.text)
     [Anonymous Symbol]                       0x08000330   Section        0  system_stm32f4xx.o(.text.SystemInit)
-    [Anonymous Symbol]                       0x08000344   Section        0  servo.o(.text.TIM2_setup)
-    [Anonymous Symbol]                       0x080003ac   Section        0  servo.o(.text.TIM_GPIO)
+    [Anonymous Symbol]                       0x08000344   Section        0  servo.o(.text.TIM1_setup)
+    [Anonymous Symbol]                       0x080003b0   Section        0  servo.o(.text.TIM_GPIO)
     [Anonymous Symbol]                       0x080003ec   Section        0  main.o(.text.main)
     $v0                                      0x080004c0   Number         0  fpinit.o(x$fpl$fpinit)
     x$fpl$fpinit                             0x080004c0   Section       26  fpinit.o(x$fpl$fpinit)
@@ -533,8 +533,8 @@ Image Symbol Table
     __use_no_semihosting_swi                 0x0800032d   Thumb Code     2  use_no_semi.o(.text)
     __semihosting_library_function           0x0800032f   Thumb Code     0  indicate_semi.o(.text)
     SystemInit                               0x08000331   Thumb Code    18  system_stm32f4xx.o(.text.SystemInit)
-    TIM2_setup                               0x08000345   Thumb Code   102  servo.o(.text.TIM2_setup)
-    TIM_GPIO                                 0x080003ad   Thumb Code    62  servo.o(.text.TIM_GPIO)
+    TIM1_setup                               0x08000345   Thumb Code   106  servo.o(.text.TIM1_setup)
+    TIM_GPIO                                 0x080003b1   Thumb Code    60  servo.o(.text.TIM_GPIO)
     main                                     0x080003ed   Thumb Code   212  main.o(.text.main)
     _fp_init                                 0x080004c1   Thumb Code    26  fpinit.o(x$fpl$fpinit)
     __fplib_config_fpu_vfp                   0x080004d9   Thumb Code     0  fpinit.o(x$fpl$fpinit)
@@ -620,10 +620,9 @@ Memory Map of the image
     0x0800032e   0x0800032e   0x00000002   PAD
     0x08000330   0x08000330   0x00000012   Code   RO           68    .text.SystemInit    system_stm32f4xx.o
     0x08000342   0x08000342   0x00000002   PAD
-    0x08000344   0x08000344   0x00000066   Code   RO           12    .text.TIM2_setup    servo.o
-    0x080003aa   0x080003aa   0x00000002   PAD
-    0x080003ac   0x080003ac   0x0000003e   Code   RO           14    .text.TIM_GPIO      servo.o
-    0x080003ea   0x080003ea   0x00000002   PAD
+    0x08000344   0x08000344   0x0000006a   Code   RO           12    .text.TIM1_setup    servo.o
+    0x080003ae   0x080003ae   0x00000002   PAD
+    0x080003b0   0x080003b0   0x0000003c   Code   RO           14    .text.TIM_GPIO      servo.o
     0x080003ec   0x080003ec   0x000000d4   Code   RO            2    .text.main          main.o
     0x080004c0   0x080004c0   0x0000001a   Code   RO          176    x$fpl$fpinit        fz_wm.l(fpinit.o)
     0x080004da   0x080004da   0x00000002   PAD
@@ -649,14 +648,14 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        212          0          0          0          4       1320   main.o
-       164          0          0          0          0       2225   servo.o
+       166          0          0          0          0       2225   servo.o
         64         26        452          0       1536        900   startup_stm32f446xx.o
         18          0          0          0          0       2857   system_stm32f4xx.o
 
     ----------------------------------------------------------------------
        464         26        468          0       1544       7302   Object Totals
          0          0         16          0          0          0   (incl. Generated)
-         6          0          0          0          4          0   (incl. Padding)
+         4          0          0          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 

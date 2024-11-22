@@ -17,17 +17,17 @@ int i;
 
 int main(void) {
 	TIM_GPIO();
-	TIM2_setup();
+	TIM1_setup();
 	
 	while(1){
 		
 		for(i =1000; i < 2000; i ++){
 			for(int j = 0; j < 1000; j ++){}
-			TIM2->CCR1 = i; /* set match value 1000-2000 is 1 ms to 2 ms*/ 
+			TIM1->CCR2 = i; /* set match value 1000-2000 is 1 ms to 2 ms*/ 
 		}
 		for(i =2000; i > 1000; i --){
 			for(int j = 0; j < 1000; j ++){}
-			TIM2->CCR1 = i; /* set match value 1000-2000 is 1 ms to 2 ms*/ 
+			TIM1->CCR2 = i; /* set match value 1000-2000 is 1 ms to 2 ms*/ 
 		}
 		
 	}

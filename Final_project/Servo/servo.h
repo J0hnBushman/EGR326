@@ -15,17 +15,17 @@ Description: 	Servo header file
 #include <string.h>
 #include <stdlib.h>
 
-//#define T2C1_PIN on pa5
-#define T2C1_AF 0
-#define T2C1_PIN      5
-#define T2C1_PORT     (GPIOA)
-#define T2C1_ODR      (T2C1_PORT->ODR)
-#define T2C1_MODER    (T2C1_PORT->MODER)
-#define T2C1_IDR      (T2C1_PORT->IDR)
-#define T2C1_PUPDR    (T2C1_PORT->PUPDR)
-#define T2C1_AFR    	(T2C1_PORT->AFR[T2C1_AF])
+//#define T1C2_PIN on pa5
+#define T1C2_AF 1
+#define T1C2_PIN      9
+#define T1C2_PORT     (GPIOA)
+#define T1C2_ODR      (T1C2_PORT->ODR)
+#define T1C2_MODER    (T1C2_PORT->MODER)
+#define T1C2_IDR      (T1C2_PORT->IDR)
+#define T1C2_PUPDR    (T1C2_PORT->PUPDR)
+#define T1C2_AFR    	(T1C2_PORT->AFR[T1C2_AF])
 
 void TIM_GPIO(void);
-void TIM2_setup(void);
+void TIM1_setup(void);
 
 #endif
