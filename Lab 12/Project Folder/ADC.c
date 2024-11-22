@@ -21,7 +21,7 @@ uint8_t N=12;
  ADC1->CR2 |= 1; /* enable ADC1 */
  }
  
-int Read_ADC(void){
+uint8_t Read_ADC(void){
 	double m = (Out_Max-Out_Min)/(In_Max-In_Min);
 	uint16_t raw;
 	int result = 0;
