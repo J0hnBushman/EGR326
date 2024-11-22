@@ -8,7 +8,7 @@ Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
 License Information: Charles Norton
 GVSU
 User-based license: Keil MDK Community (non-commercial free of charge)
-Valid until: May 31 2033. Cached until: Nov 21 2024
+Valid until: May 31 2033. Cached until: Nov 23 2024
  
 Tool Versions:
 Toolchain:       Keil MDK Community (non-commercial free of charge  Version: 5.38.0.0
@@ -24,13 +24,30 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.1.0.0
 Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
-C:\Users\xchar\OneDrive\Documents\GVSU_ARCHIVE\Fall_2024\EGR_326_903\EGR326\Lab 11\CJ\Project\EEPROM.uvprojx
-Project File Date:  11/14/2024
+C:\Users\xchar\OneDrive\Documents\GVSU_ARCHIVE\Fall_2024\EGR_326_903\EGR326\Final_project\Piezo\Piezo_Buzzer.uvprojx
+Project File Date:  11/20/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-".\Objects\EEPROM.axf" - 0 Error(s), 0 Warning(s).
+main.c(2): warning: In file included from...
+./Piezo.h(113): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+main.c(23): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+main.c(6): warning: unused variable 'i' [-Wunused-variable]
+        int i = 0;
+            ^
+main.c(22): warning: 'return' will never be executed [-Wunreachable-code-return]
+        return 0;
+               ^
+4 warnings generated.
+compiling main.c...
+linking...
+Program Size: Code=712 RO-data=468 RW-data=0 ZI-data=1632  
+".\Objects\Piezo_Buzzer.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -44,9 +61,9 @@ Package Vendor: Keil
                 https://www.keil.com/pack/Keil.ARM_Compiler.1.7.2.pack
                 Keil.ARM_Compiler.1.7.2
                 Keil ARM Compiler extensions for ARM Compiler 5 and ARM Compiler 6
-   * Component: STDERR Variant: ITM Version: 1.2.0
-   * Component: STDIN Variant: ITM Version: 1.2.0
-   * Component: STDOUT Variant: ITM Version: 1.2.0
+   * Component: STDERR Variant: Breakpoint Version: 1.2.0
+   * Component: STDIN Variant: Breakpoint Version: 1.2.0
+   * Component: STDOUT Variant: Breakpoint Version: 1.2.0
 
 Package Vendor: Keil
                 https://www.keil.com/pack/Keil.STM32F4xx_DFP.2.17.1.pack
@@ -63,22 +80,22 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.6.0
 
-   * Component: Keil.ARM Compiler::Compiler:I/O:STDERR:ITM:1.2.0
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDERR:Breakpoint:1.2.0
       Source file:   Source/retarget_io.c
 
-   * Component: Keil.ARM Compiler::Compiler:I/O:STDIN:ITM:1.2.0
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDIN:Breakpoint:1.2.0
       Source file:   Source/retarget_io.c
 
-   * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:ITM:1.2.0
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:Breakpoint:1.2.0
       Source file:   Source/retarget_io.c
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
       Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f446xx.s
-      Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
       Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
+      Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
+      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
       Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

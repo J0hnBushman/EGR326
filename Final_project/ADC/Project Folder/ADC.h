@@ -3,8 +3,8 @@
 
 #define VREF 3.3
 
-double Read_ADC(void);
+int Read_ADC(void);
 void adc_init(void);
-int map(int Input, int In_Min, int In_Max, int Out_Min, int Out_Max);
+int map(int Input, double In_Min, double In_Max, double Out_Min, double Out_Max);
 
 #endif

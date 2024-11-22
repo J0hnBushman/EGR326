@@ -15,18 +15,17 @@ uint8_t N=12;
  ADC1->CR2 |= 1; /* enable ADC1 */
  }
  
-double Read_ADC(void){
+int Read_ADC(void){
 	uint16_t raw;
-	double result = 0;
 	
 	while(!(ADC1->SR & 2)) {} /* wait for conv complete */
 	raw=ADC1->DR &0xFFF; /* read conversion result */
-	result = raw*VREF/pow(2,N); /* decode from binary to decimal ADC readout */	
-	return result;
+	//result = raw*VREF/pow(2,N); /* decode from binary to decimal ADC readout */	
+	return raw;
 	}
 
-int map(int Input, int In_Min, int In_Max, int Out_Min, int Out_Max){
-	int m = 0;
+int map(int Input, double In_Min, double In_Max, double Out_Min, double Out_Max){
+	double m = 0.0;
 	int y = 0;
 	
 	m = (Out_Max-Out_Min)/(In_Max-In_Min);

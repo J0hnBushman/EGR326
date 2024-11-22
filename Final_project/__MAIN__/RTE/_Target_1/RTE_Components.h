@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Furby' 
+ * Project: '__MAIN__' 
  * Target:  'Target 1' 
  */
 
