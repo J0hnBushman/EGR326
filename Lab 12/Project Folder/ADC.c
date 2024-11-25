@@ -29,10 +29,10 @@ uint8_t Read_ADC(void){
 	while(!(ADC1->SR & 2)) {} /* wait for conv complete */
 	raw=ADC1->DR &0xFFF; /* read conversion result */
 
-		printf("Raw: %d\t\t", raw);
+//		printf("Raw: %d\t\t", raw);
 	//result = raw*VREF/pow(2,N); /* decode from binary to decimal ADC readout */	
 	result = ((m*raw)-(m*In_Min))+Out_Min;
 		
-		printf("Value: %d\n", result);
+//		printf("Value: %d\n", result);
 	return result;
 	}
