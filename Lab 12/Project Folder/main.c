@@ -92,7 +92,7 @@ TIM5->CR1 = 1; /* enable TIM2 */
 	 SysTick -> CTRL	= 0;
 	 
 	 //Setting SysTick_LOAD ms
-	 SysTick -> LOAD	= (160000000)-1; // 1 sec interrupt
+	 SysTick -> LOAD	= (160000000/2)-1; // 1 sec interrupt
 	 
 	 //Writing to SysTick_VAL  to clear it
 	 SysTick -> VAL	= 0;
@@ -104,6 +104,7 @@ TIM5->CR1 = 1; /* enable TIM2 */
 //////////////////////////////////////////////////// WRITE VALUE TO ADC ////////////////////////////////////////////////////////////
  void display_adc(point coord)
  {
+	 value = (value>=9)?9:value;
    Draw_Char_BG(coord.x,coord.y,'0'+value,WHITE,BLACK,&font_ubuntu_mono_24);
 	}
 /////////////////////////////////////////////////// SYSTICK HANDLER //////////////////////////////////////////////////////////////////
