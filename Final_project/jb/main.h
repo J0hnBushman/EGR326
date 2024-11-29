@@ -24,6 +24,10 @@
 #include <stm32f446xx.h>
 #include <stdio.h>
 #include "Sonar.h"
+#include "servo.h"
+#include "ADC.h"
+#include "health_bar.h"
+#include "Flash_Access.h"
 
 /*******************************************************************************/
 //                          USER DEFINES
@@ -45,12 +49,13 @@
 #define ExpFeeding		11
 
 //EXPRESSION
-#define content 	0
-#define happy 		1
-#define hungry 		2
-#define sleepy		3
-#define dead			4
-#define feeding		5
+#define content 	 0
+#define happy 	 	 1
+#define hungry     2
+#define sleepy 		 3
+#define dead			 4
+#define feeding		 5
+#define MENU_STATE 6
 
 #define MSB(X)          (((X & 0x70)>>4)+'0')
 #define Y_MSB(X)        (((X & 0xF0)>>4)+'0')
@@ -82,6 +87,7 @@ void Set_Date(uint8_t RTC_Year, uint8_t RTC_Month, uint8_t RTC_Date);
 void Set_TD(void);
 /// @brief READ the Date
 void Read_Date(void);
+void Read_Time(void);
 /// @brief just some menu screens
 void MENU_SCREENS(void);
 

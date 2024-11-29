@@ -20,20 +20,26 @@ int main(void) {
 	TIM1_setup();
 	
 	while(1){
-		
-		for(i =1000; i < 2000; i ++){
-			for(int j = 0; j < 1000; j ++){}
-			TIM1->CCR2 = i; /* set match value 1000-2000 is 1 ms to 2 ms*/ 
-		}
-		for(i =2000; i > 1000; i --){
-			for(int j = 0; j < 1000; j ++){}
-			TIM1->CCR2 = i; /* set match value 1000-2000 is 1 ms to 2 ms*/ 
-		}
+		    // Set duty cycle for 90 degrees (1.5 ms pulse width)
+		//TIM1->CCR2 = i; // Adjust this value for different angles
+for(int i = 0; i < 1000000; i ++){}
+	
+        TIM1->CCR2 = 1000;
+				TIM1->CCR1 = 1000;
+			  TIM1->CCR3 = 1000;
+	
+	
+	for(int i = 0; i < 1000000; i ++){}
+	
+        TIM1->CCR2 = 2000;
+				TIM1->CCR1 = 2000;
+				TIM1->CCR3 = 2000;
 		
 	}
 	
 }
 
-
+//100 ms period 
+//8ms on 
 
 
