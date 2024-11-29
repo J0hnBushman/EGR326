@@ -102,9 +102,9 @@ GPIOA->MODER |=  0x00008800;
 GPIOA->AFR[0] &=~0xF0F00000;
 GPIOA->AFR[0] |= 0x50500000;
 
-	//GPIO 4 for the slave select
-GPIOA->MODER &= ~0x00000300;
-GPIOA->MODER |=  0x00000100;
+	//GPIOB 12 for the slave select
+GPIOB->MODER &= ~(0x3<<(2*12));
+GPIOB->MODER |=  0x1<<(2*12);
 
 	//SPI1 set up 
 SPI1->CR1 = 0x31C;

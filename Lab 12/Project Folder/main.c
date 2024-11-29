@@ -41,22 +41,18 @@ uint8_t value = 0;
 int main (void) {
  __disable_irq();
 
-	gpio_init();
-	Display_Init(); // Initializes the LCD
-	Fill_Screen(BLACK);
+	//gpio_init();
+	//Display_Init(); // Initializes the LCD
+	//Fill_Screen(BLACK);
 	adc_init();
-  SysTick_init();
+  //SysTick_init();
  __enable_irq();
 	
  while (1) {
 		value = Read_ADC();
-	 	TIM5->CCR1 = ((TIM5->ARR+1)*((double)value/10.0));
 	 
-	 if(flag){
-		 display_adc(Center);
-		 flag=false;
-	 }
-	 
+	 for(int i = 0; i < 100000; i ++){}
+
 	}
 }
 
@@ -65,10 +61,11 @@ int main (void) {
 
 //////////////////////////////// GPIO INIT ///////////////////////////////////////////////
  void gpio_init(void){
- RCC->AHB1ENR |= 1; /* enable GPIOA clock */
- RCC->AHB1ENR |= 4; /* enable GPIOC clock */
- GPIOA->MODER |= 0xC; /* PA1 analog */
+	//ADC2 on PAC2
+ RCC->AHB1ENR |= 7; /* enable GPIOA clock */
+ GPIOC->MODER |= 0x3<<(2*2); /* PC2 analog */
  
+	
  // configure PA0 as output to drive the LED AF2
 GPIOA->MODER &= ~0x00000003; /* clear pin mode */
 GPIOA->MODER |= 0x00000002; /* set pin to alternate function */
@@ -101,13 +98,19 @@ TIM5->CR1 = 1; /* enable TIM2 */
 	 SysTick -> CTRL	= 7;	 
  }
  
+ 
+ 
 //////////////////////////////////////////////////// WRITE VALUE TO ADC ////////////////////////////////////////////////////////////
  void display_adc(point coord)
  {
 	 value = (value>=9)?9:value;
    Draw_Char_BG(coord.x,coord.y,'0'+value,WHITE,BLACK,&font_ubuntu_mono_24);
 	}
+ 
+	
 /////////////////////////////////////////////////// SYSTICK HANDLER //////////////////////////////////////////////////////////////////
  void SysTick_Handler(void){
 	flag = true;
 }
+ 
+

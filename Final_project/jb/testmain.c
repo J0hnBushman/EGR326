@@ -27,6 +27,8 @@ int servo = 1000;
 char value = 0;
 char timeDate[14];
 
+int lightLvl = 0;
+
 
 
 /*DIGITAL MONSTER STURCTURE*/     				//THIS IS A WOKRING PROGRESS
@@ -89,6 +91,7 @@ int main(void)
 	  sonar_gpio_init();
 		TIM1_setup();
 		timer_init();
+		adc_init();
 	
 	__enable_irq();
 	
@@ -159,20 +162,28 @@ int main(void)
 			
 			/*DISTANCE TAIL WAG*/
 			distance = abs(dist());	//get the distance value
-			
-			if((servo == 1000) && (distance <200)){ //check dist and servo position
-				servo = 2000; 
-				state = happy;
-			}else if((servo == 2000) && (distance <200)){
-				servo = 1000;
+			//check servo position
+			if((distance < 200)){ 
+				if(menu != ExpHappy){
+					update_screen = 1;
+				}
 				state = happy;
 			}else{
 				state = content;
 			}
-			
+			//update servo poistion
 			TIM1->CCR1 = servo;		//adjust servo position PWM
 			
-			
+			/*CHECK LIGHT LEVEL*/
+			lightLvl = Read_ADC();
+			if(lightLvl<=2){
+				if(menu != ExpSleepy){
+					update_screen = 1;
+				}
+				state = sleepy;
+			}else{
+				state = content;
+			}
 		}
 }
 
