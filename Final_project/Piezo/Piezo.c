@@ -7,7 +7,7 @@
 static void Delay_ms(uint32_t delay) {
     volatile uint32_t i;
     while (delay--) {
-        for (i = 0; i < 4000; i++) {  // Adjust the loop count based on your clock
+                                       for (i = 0; i < 4000; i++) {  // Adjust the loop count based on your clock
             __NOP();  // No Operation, just a delay
         }
     }
@@ -19,7 +19,8 @@ static void Timer3_Init(uint32_t frequency) {
     RCC->APB1ENR |= 1<<1;  // Enable Timer 3 clock
     RCC->AHB1ENR |= 1<<2;  // Enable GPIOC clock
 
-    // Configure PA5 as alternate function (AF2) for TIM3 Channel 1 (PWM)
+    // Configure PC6 as alternate function (AF2) for TIM3 Channel 1 (PWM)
+		GPIOC->MODER &= ~(0x3 << 2*6);
     GPIOC->MODER |= 0x2 << 2*6;   // Set PC6 to alternate function mode
     GPIOC->AFR[0] |= (0x2 << 4*6);         // Set PC6 to TIM3_CH1 (AF1)
 
@@ -54,4 +55,5 @@ void Buzzer_PlayTone(uint32_t frequency, uint32_t duration) {
 // Stop the buzzer (set PWM to 0)
 void Buzzer_Stop(void) {
     TIM3->CR1 &= ~0x01;  // Disable Timer 3 to stop the buzzer
+		GPIOC->MODER &= ~(0x3 << 2*6);
 }

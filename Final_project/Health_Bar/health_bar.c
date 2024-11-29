@@ -75,8 +75,6 @@ uint8_t HealthCurrent(void){
 		DATA_OUT(HIGH);
 		
 		CLOCK_OUT(HIGH);
-		
-
 	}
 	
 	CLOCK_OUT(LOW);
@@ -124,6 +122,7 @@ uint8_t HealthPlusPlus(void){
 	if(health==8){
 	return 0;
 	}
+	health = 8;
 	
 	health++;
 	uint8_t i;
