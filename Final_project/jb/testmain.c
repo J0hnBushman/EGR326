@@ -18,7 +18,8 @@ DESCRIPTION:
 uint8_t hall_FLAG = 1;
 uint8_t hall2_FLAG = 1;
 uint8_t swPress = 0; 
-uint8_t foodCount = 0; 
+uint8_t foodCount = 0;
+uint8_t petFlag = 0;
 int last = 0;
 int current; 
 double period; 
@@ -97,6 +98,9 @@ int main(void)
 	
 	 
 	menu = mainMenu;
+	TIM1->CCR1 = 1700;		//adjust servo position PWM
+	TIM1->CCR2 = 1700;		//adjust servo position PWM
+	TIM1->CCR3 = 1700;		//adjust servo position PWM
       while (1)
     {
 			switch(state){
@@ -104,6 +108,7 @@ int main(void)
 				case(content):
 				default:
 					menu = ExpContent;
+					
 				
 					break;
 				
@@ -166,19 +171,20 @@ int main(void)
 			if((distance < 200)){ 
 				if(menu != ExpHappy){
 					update_screen = 1;
+					//TIM1->CCR3 = 1700;		//adjust servo position PWM
 				}
 				state = happy;
 			}else{
 				state = content;
 			}
 			//update servo poistion
-			TIM1->CCR1 = servo;		//adjust servo position PWM
 			
 			/*CHECK LIGHT LEVEL*/
 			lightLvl = Read_ADC();
 			if(lightLvl<=2){
 				if(menu != ExpSleepy){
 					update_screen = 1;
+					//TIM1->CCR2 = 1700;		//adjust servo position PWM
 				}
 				state = sleepy;
 			}else{
@@ -201,26 +207,21 @@ int main(void)
 																				EXTI15_10_Handler
 *********************************************************************************/
 	void EXTI15_10_IRQHandler(void){
-		//hall_flag = 1;
 
 		if(EXTI->PR & 1<<HALL_PIN){
-			foodCount ++;
+			foodCount  = 1;
 			
-				if((HALL_IN) && hall_FLAG == 1){
-					hall_FLAG = 0; 
-				}else if((HALL_IN) == 0 && hall_FLAG == 0){
-					hall_FLAG = 1; 
-				}
-				
 			}
 		
 			if(EXTI->PR & 1<<HALL2_PIN){
-			
+				petFlag = 1; 
+			/*
 				if((HALL2_IN) && hall2_FLAG == 1){
 					hall2_FLAG = 0; 
 				}else if((HALL2_IN) == 0 && hall2_FLAG == 0){
 					hall2_FLAG = 1; 
 				}
+				*/
 				
 			}
 			

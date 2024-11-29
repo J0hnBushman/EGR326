@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\EGR326_lab6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\EGR326_lab6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Fri Nov 29 13:03:56 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Fri Nov 29 15:23:39 2024
 <BR><P>
 <H3>Maximum Stack Usage =        392 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -807,8 +807,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = strcmp
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_open
-<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_lc_ctype
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_lc_numeric
+<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_get_lc_ctype
 </UL>
 
 <P><STRONG><a name="[150]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
@@ -1500,7 +1500,7 @@ Global Symbols
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MENU_SCREENS
 </UL>
 
-<P><STRONG><a name="[32]"></a>EXTI15_10_IRQHandler</STRONG> (Thumb, 284 bytes, Stack size 0 bytes, testmain.o(.text.EXTI15_10_IRQHandler))
+<P><STRONG><a name="[32]"></a>EXTI15_10_IRQHandler</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, testmain.o(.text.EXTI15_10_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f446xx.o(RESET)
 </UL>
 <P><STRONG><a name="[14]"></a>EXTI4_IRQHandler</STRONG> (Thumb, 520 bytes, Stack size 0 bytes, testmain.o(.text.EXTI4_IRQHandler))
@@ -1821,7 +1821,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[113]"></a>hallEffect_pinInit</STRONG> (Thumb, 186 bytes, Stack size 8 bytes, hall.o(.text.hallEffect_pinInit))
+<P><STRONG><a name="[113]"></a>hallEffect_pinInit</STRONG> (Thumb, 194 bytes, Stack size 8 bytes, hall.o(.text.hallEffect_pinInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = hallEffect_pinInit &rArr; __NVIC_EnableIRQ
 </UL>
 <BR>[Calls]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_EnableIRQ
@@ -1829,7 +1829,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[9e]"></a>main</STRONG> (Thumb, 426 bytes, Stack size 32 bytes, testmain.o(.text.main))
+<P><STRONG><a name="[9e]"></a>main</STRONG> (Thumb, 436 bytes, Stack size 32 bytes, testmain.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 392 + Unknown Stack Size
 <LI>Call Chain = main &rArr; MENU_SCREENS &rArr; Set_TD &rArr; Draw_String_BG &rArr; Draw_Char_BG &rArr; Draw_Pixel &rArr; Set_Address_Window &rArr; ILI_Push_16Bit &rArr; ILI_8Bit_Data &rArr; SPI_Transmit
 </UL>

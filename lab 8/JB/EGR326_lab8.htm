@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\EGR326_lab8.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\EGR326_lab8.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Sat Nov  9 17:47:52 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Fri Nov 29 18:16:28 2024
 <BR><P>
 <H3>Maximum Stack Usage =        100 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; Init_seq &rArr; SPI1_write
+__rt_entry_main &rArr; main &rArr; Init_seq &rArr; sevenSeg_write
 <P>
 <H3>
 Functions with no stack information
@@ -253,7 +253,7 @@ Global Symbols
 
 <P><STRONG><a name="[6c]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; Init_seq &rArr; SPI1_write
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; Init_seq &rArr; sevenSeg_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -644,22 +644,11 @@ Global Symbols
 <P><STRONG><a name="[a5]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
 <P><STRONG><a name="[76]"></a>Init_seq</STRONG> (Thumb, 158 bytes, Stack size 32 bytes, main.o(.text.Init_seq))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Init_seq &rArr; SPI1_write
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Init_seq &rArr; sevenSeg_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_write
+<BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevenSeg_write
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[78]"></a>SPI1_init</STRONG> (Thumb, 194 bytes, Stack size 0 bytes, main.o(.text.SPI1_init))
-<BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[77]"></a>SPI1_write</STRONG> (Thumb, 130 bytes, Stack size 4 bytes, main.o(.text.SPI1_write))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = SPI1_write
-</UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_seq
-<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, main.o(.text.SysTick_Handler))
@@ -669,14 +658,25 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f446xx.o(.text)
 </UL>
 <P><STRONG><a name="[6d]"></a>main</STRONG> (Thumb, 504 bytes, Stack size 64 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = main &rArr; Init_seq &rArr; SPI1_write
+<BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = main &rArr; Init_seq &rArr; sevenSeg_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_write
+<BR>[Calls]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevenSeg_write
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;systick_init
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_seq
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI1_init
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sevenSeg_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
+</UL>
+
+<P><STRONG><a name="[78]"></a>sevenSeg_init</STRONG> (Thumb, 202 bytes, Stack size 0 bytes, main.o(.text.sevenSeg_init))
+<BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[77]"></a>sevenSeg_write</STRONG> (Thumb, 140 bytes, Stack size 4 bytes, main.o(.text.sevenSeg_write))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = sevenSeg_write
+</UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_seq
+<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[79]"></a>systick_init</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, main.o(.text.systick_init))
