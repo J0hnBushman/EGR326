@@ -8,10 +8,9 @@ int main(void){
 	
 	while(1){
 		
-		
-		Buzzer_PlayTone(NOTE_A7, 500);
-		Buzzer_PlayTone(NOTE_E7, 500);
-		Buzzer_PlayTone(NOTE_E7, 500);
+		Buzzer_PlayTone(NOTE_B2, 500);
+		Buzzer_PlayTone(NOTE_D2, 500);
+		Buzzer_PlayTone(NOTE_E2, 500);
 		
 		
 	}
