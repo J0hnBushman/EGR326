@@ -64,10 +64,6 @@ void tim5_init(void);
 
 void TIM5_IRQHandler(void);
 
-void SysTick_Init(void);
-void delayMS(uint16_t n);
-void delayMicroS(uint16_t n);
-
 
 
 #endif

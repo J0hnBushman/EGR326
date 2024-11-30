@@ -1,0 +1,1 @@
+./sevenseg.o: sevenSeg.c

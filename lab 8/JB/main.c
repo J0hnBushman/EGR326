@@ -9,14 +9,15 @@
 
 #include <stm32f446xx.h>
 #include <stdio.h>
+#include "sevenSeg.h"
 
 #define BP1 ((GPIOC->IDR)&(1<<13))	
 #define BP2 ((GPIOC->IDR)&(1<<12))
 #define BP3 ((GPIOC->IDR)&(1<<11))
 
 
-void SPI1_init(void);
-void SPI1_write(uint8_t adder, uint8_t dater);
+void sevenSeg_init(void);
+void sevenSeg_write(uint8_t adder, uint8_t dater);
 void delayMs(int n);
 void Init_seq(void);
 void systick_init(void);
@@ -50,7 +51,7 @@ int main(void)
 	int p2 = 0;
 	
 	__disable_irq();
-	SPI1_init();
+	sevenSeg_init();
 	Init_seq();
 	__enable_irq();
 	
@@ -70,16 +71,16 @@ int main(void)
 					p2 = 1;
 				}
 				if(p1 == 0){
-					SPI1_write(1, num[count%10]);
-					SPI1_write(2, num[(count%100)/10]);
+					sevenSeg_write(1, num[count%10]);
+					sevenSeg_write(2, num[(count%100)/10]);
 				}
 				if(p2 == 0){
-					SPI1_write(4, num[count%10]);
-					SPI1_write(5, num[(count%100)/10]);
+					sevenSeg_write(4, num[count%10]);
+					sevenSeg_write(5, num[(count%100)/10]);
 				}
 					if(count<160){
-					SPI1_write(7, num[(count/10)%10]);
-					SPI1_write(8, num[(count/100)%10]);
+					sevenSeg_write(7, num[(count/10)%10]);
+					sevenSeg_write(8, num[(count/100)%10]);
 				}
 
 			}
@@ -89,7 +90,7 @@ int main(void)
 
 
 ///
-void SPI1_init(void)
+void sevenSeg_init(void)
 {
 //GPIO A and B
 RCC->AHB1ENR |= 1;
@@ -120,14 +121,14 @@ SPI1->CR1 |= 0x40;
 
 
 //
-void SPI1_write(uint8_t adder, uint8_t dater){
+void sevenSeg_write(uint8_t adder, uint8_t dater){
 while (!(SPI1->SR & 2)){}
-	GPIOA->BSRR = 0x00100000;
+	GPIOB->ODR &= ~ (1<<12);
 	SPI1->DR = adder;
 	while (SPI1->SR & 0x80){}
 	SPI1->DR = dater;
 	while (SPI1->SR & 0x80){}
-	GPIOA->BSRR = 0x00000010;
+	GPIOB->ODR |= (1<<12);
 }
 
 
@@ -145,21 +146,21 @@ for(i=0;i<3195;i++);
 
 ///
 void Init_seq(void){
-	SPI1_write(0x09, 0x00);
-	SPI1_write(0x0A, 0x02);
-	SPI1_write(0x0B, 0x07);
-	SPI1_write(0x0C, 0x01);
-	SPI1_write(0x0F, 0x0F);
-	SPI1_write(0x0F, 0x00);
+	sevenSeg_write(0x09, 0x00);
+	sevenSeg_write(0x0A, 0x02);
+	sevenSeg_write(0x0B, 0x07);
+	sevenSeg_write(0x0C, 0x01);
+	sevenSeg_write(0x0F, 0x0F);
+	sevenSeg_write(0x0F, 0x00);
 	//setup screen
-	SPI1_write(0x08, num[0]);
-	SPI1_write(0x07, num[0]);
-	SPI1_write(0x06, num[10]); //dash
-	SPI1_write(0x05, num[0]);
-	SPI1_write(0x04, num[0]);
-	SPI1_write(0x03, num[10]); //dash
-	SPI1_write(0x02, num[0]);
-	SPI1_write(0x01, num[0]);
+	sevenSeg_write(0x08, num[0]);
+	sevenSeg_write(0x07, num[0]);
+	sevenSeg_write(0x06, num[10]); //dash
+	sevenSeg_write(0x05, num[0]);
+	sevenSeg_write(0x04, num[0]);
+	sevenSeg_write(0x03, num[10]); //dash
+	sevenSeg_write(0x02, num[0]);
+	sevenSeg_write(0x01, num[0]);
 }
 
 

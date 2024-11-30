@@ -390,14 +390,14 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>spi.c</FileName>
+              <FileName>sevenSeg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\spi.c</FilePath>
+              <FilePath>.\sevenSeg.c</FilePath>
             </File>
             <File>
-              <FileName>spi.h</FileName>
+              <FileName>sevenSeg.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\spi.h</FilePath>
+              <FilePath>.\sevenSeg.h</FilePath>
             </File>
           </Files>
         </Group>

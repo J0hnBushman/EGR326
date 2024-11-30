@@ -2,7 +2,6 @@
 #include "health_bar.h"
 
 int main(void){
-	//SysTick_Init();
 	tim5_init();
 	init_ShiftRegister();
 	//HealthPlusPlus();
