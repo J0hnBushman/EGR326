@@ -30,24 +30,27 @@ Project File Date:  11/20/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-main.c(2): warning: In file included from...
-./Piezo.h(113): warning: no newline at end of file [-Wnewline-eof]
+Piezo.c(1): warning: In file included from...
+./Piezo.h(149): warning: no newline at end of file [-Wnewline-eof]
 #endif
       ^
-main.c(21): warning: no newline at end of file [-Wnewline-eof]
+Piezo.c(29): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                GPIOC->MODER &= ~(0x3 << 2*6);
+                             ~~ ^~~~~~~~~~~~~
+Piezo.c(70): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+    TIM3->CR1 &= ~0x01;  // Disable Timer 3 to stop the buzzer
+              ~~ ^~~~~
+Piezo.c(71): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+                GPIOC->MODER &= ~(0x3 << 2*6);
+                             ~~ ^~~~~~~~~~~~~
+Piezo.c(194): warning: no newline at end of file [-Wnewline-eof]
 }
  ^
-main.c(6): warning: unused variable 'i' [-Wunused-variable]
-        int i = 0;
-            ^
-main.c(20): warning: 'return' will never be executed [-Wunreachable-code-return]
-        return 0;
-               ^
-4 warnings generated.
-compiling main.c...
+5 warnings generated.
+compiling Piezo.c...
 linking...
-Program Size: Code=696 RO-data=468 RW-data=0 ZI-data=1632  
-".\Objects\Piezo_Buzzer.axf" - 0 Error(s), 4 Warning(s).
+Program Size: Code=1308 RO-data=484 RW-data=4 ZI-data=1636  
+".\Objects\Piezo_Buzzer.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -95,7 +98,7 @@ Package Vendor: Keil
       Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
       Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
       Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

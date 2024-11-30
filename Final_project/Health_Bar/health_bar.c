@@ -44,6 +44,7 @@ _______________________________|
 */
 
 static uint8_t health = 8;
+<<<<<<< HEAD
 int count = 60;
 
 int num[] = {0x7E,  //0
@@ -58,6 +59,9 @@ int num[] = {0x7E,  //0
 							0x7B,  //9
 							0x01}; //-
 
+=======
+bool flag = 1;
+>>>>>>> 4d6f4e2b833ae32375d8c2a8748cbb0ec427d353
 void init_ShiftRegister(void){
 	
 	RCC->AHB1ENR |= (1<<2);
@@ -214,7 +218,6 @@ void HealthClear(void){
 
 
 void tim5_init(void){
-		/////setting up TIM5_ch1 on GPIO B pin 4 as a timer interupt 
 	//Setting the pin to AF2
 	
 	RCC->APB1ENR |= (1<<3);
@@ -240,6 +243,12 @@ void TIM5_IRQHandler(void)
 		HealthMinusMinus();
 	}
 	TIM5->SR &= ~0x0001U;
+<<<<<<< HEAD
 	sevenSeg_write(0x05, num[count/10]);
 	sevenSeg_write(0x04, num[count%10]);
+=======
+	
+	HealthMinusMinus();
+		
+>>>>>>> 4d6f4e2b833ae32375d8c2a8748cbb0ec427d353
 }

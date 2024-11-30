@@ -99,14 +99,50 @@
 #define NOTE_D8    4699
 #define NOTE_DS8   4978
 
+#define TONE1_0		 0
+#define TONE1_1		 1
+#define TONE1_2		 2
+#define TONE1_3		 3
+#define TONE1_END	 4
+
+#define TONE2_0		 5
+#define TONE2_1		 6
+#define TONE2_2		 7
+#define TONE2_3		 8
+#define TONE2_END	 9
+
+#define TONE3_0		 10
+#define TONE3_1		 11
+#define TONE3_2		 12
+#define TONE3_3		 13
+#define TONE3_END	 14
+
+#define TONE4_0		 15
+#define TONE4_1		 16
+#define TONE4_2		 17
+#define TONE4_3		 18
+#define TONE4_END	 19
+
+extern unsigned long long milliseconds;
+extern int tone_state;
+
 // Initialize the buzzer by configuring the GPIO and Timer
 void Buzzer_Init(void);
 
 // Generate a tone on the buzzer for a specific duration (in milliseconds)
-void Buzzer_PlayTone(uint32_t frequency, uint32_t duration);
+void Play_Tone_1(void);
+void Play_Tone_2(void);
+void Play_Tone_3(void);
+void Play_Tone_4(void);
 
 // Stop the tone (Disable Timer)
 void Buzzer_Stop(void);
+
+void Timer7_Init(void);
+
+void TIM7_IRQHandler(void);
+
+
 
 
 

@@ -8,9 +8,8 @@ int main(void){
 	sevenSeg_init();
 	Init_seq();
 	//HealthPlusPlus();
-	HealthCurrent();
 	while(1){
-		
+		HealthCurrent();
 	}
 	
 	return 0;

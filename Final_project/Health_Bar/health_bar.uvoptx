@@ -158,7 +158,11 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
+<<<<<<< HEAD
           <ItemText>count,0x0A</ItemText>
+=======
+          <ItemText>health,0x0A</ItemText>
+>>>>>>> 4d6f4e2b833ae32375d8c2a8748cbb0ec427d353
         </Ww>
       </WatchWindow1>
       <Tracepoint>

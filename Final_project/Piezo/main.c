@@ -3,15 +3,13 @@
 
 
 int main(void){
-	int i = 0;
+	__disable_irq();
+	Timer7_Init();
+	__enable_irq();
 	
+	Play_Tone_4();
 	
 	while(1){
-		
-		Buzzer_PlayTone(NOTE_B2, 500);
-		Buzzer_PlayTone(NOTE_D2, 500);
-		Buzzer_PlayTone(NOTE_E2, 500);
-		
 		
 	}
 	
