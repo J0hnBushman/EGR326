@@ -49,28 +49,15 @@ int num[] = {0x7E,  //0
 							0x01}; //-
 
 
-
-/*DIGITAL MONSTER STURCTURE*/     				//************THIS IS A WOKRING PROGRESS************
-typedef struct{
-	uint8_t tail_wag;
-	//int state; //Monsters current expression
-	//int menu; //displayed screen
-	
-}Monster;
-
-
-
-
 /***MENU STUFF***/
 //inital screen 
 int menu = startUpScreen; 
 //init state
 int state = MENU_STATE;
-//screen adjust flag
-uint8_t update_screen = 1; 
+int prev_state;
 
-uint8_t tmp = 0; 
-//temp value to create a GRAY highlight value
+//temp valu is for the 
+uint8_t tmp = 0;
 
 //RTC_data and point
 char RTC_data;
@@ -112,7 +99,6 @@ int main(void)
 		timer_init();
 		tim5_init();
 		init_ShiftRegister();
-		//sevenSeg_init();
 		HealthCurrent();
 		Init_seq();
 		adc_init();
@@ -121,18 +107,15 @@ int main(void)
 	
 	 
 	menu = mainMenu;
-	//TIM1->CCR1 = 1700;		//adjust servo position PWM
-	//TIM1->CCR2 = 1700;		//adjust servo position PWM
-	//TIM1->CCR3 = 1700;		//adjust servo position PWM
+	
       while (1)
     {
 			switch(state){
 //----------------------------content------------------------------
 				case(content):
 				default:
-					//menu = ExpContent;
-					menu = ExpHappy;
-				
+					menu = ExpContent;
+
 					break;
 				
 				
@@ -153,7 +136,7 @@ int main(void)
 				
 //-------------------------------SLEEPY---------------------------------
 				case(sleepy):
-					menu = ExpSleepy;		//DIDN't Make an expression for this, might just use the content mouth
+					menu = ExpSleepy;
 				
 					break;
 				
@@ -166,45 +149,21 @@ int main(void)
 				
 //--------------------------------MENU-------------------------------------
 				case(MENU_STATE):
-				
+					
 				
 					break;
 			}
 			
-			
-
-			if(update_screen){
-				if(state != MENU_STATE){
-					update_screen = 0; //only loop when updataing the menu
-				}
 				MENU_SCREENS(); //change LCD
-			}
+			
 			
 			
 			/*DISTANCE TAIL WAG*/
 			distance = abs(dist());	//get the distance value
 			//check servo position
-			if((distance < 200)){ 
-				if(menu != happy){
-					update_screen = 1;
-				}
-				state = happy;
-			}else{
-				state = content;
-			}
-			//update servo poistion
 			
 			/*CHECK LIGHT LEVEL*/
 			lightLvl = Read_ADC();
-			if(lightLvl<=2){
-				if(menu != ExpSleepy){
-					update_screen = 1;
-					//TIM1->CCR2 = 1700;		//adjust servo position PWM
-				}
-				state = sleepy;
-			}else{
-				state = content;
-			}
 			
 			if(count != old_count){
 				old_count = count; 
@@ -237,14 +196,6 @@ int main(void)
 			
 		if(EXTI->PR & 1<<HALL2_PIN){
 				petFlag = 1; 
-			/*
-				if((HALL2_IN) && hall2_FLAG == 1){
-					hall2_FLAG = 0; 
-				}else if((HALL2_IN) == 0 && hall2_FLAG == 0){
-					hall2_FLAG = 1; 
-				}
-				*/
-				
 			}
 			
 		if(EXTI->PR & 1<<BTN1_PIN){
@@ -303,7 +254,6 @@ int main(void)
 			//it needs to be adjusted such that you go back to the 
 			//previous state not just the content state
 			state = content;
-			update_screen = 1;
 			menu_flag = 0;
 			menu = ExpContent;
 		}
