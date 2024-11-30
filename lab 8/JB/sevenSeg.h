@@ -13,37 +13,18 @@
 //                          USER DEFINES
 /*******************************************************************************/
 
-
-
-/*******************************************************************************/
-/*******************************************************************************/
-
-/*******************************************************************************/
-//                           USER STRUCT DEFINITIONS
-/*******************************************************************************/
-
+							
 /*******************************************************************************/
 /*******************************************************************************/
 
 /*******************************************************************************/
 //                          USER FUNCTION PROTOTYPE
 /*******************************************************************************/
-/// @brief Initialize SPI1 registers for STM32F446RE Nucleo board
-void SPI_Init(void);
+void sevenSeg_init(void);
 
-/// @brief Enable GPIO for SPI1 on STM32F446RE Nucleo board
-void SPI_GPIO(void);
+void sevenSeg_write(uint8_t adder, uint8_t dater);
 
-/// @brief Disable SPI1 for idle
-void SPI_Disable(void);
-
-/// @brief Enable SPI1 for use
-void SPI_Enable(void);
-
-/// @brief Transmits data over SPI1 line
-/// @param data is data byte array to transmit
-/// @param size is length of data byte array
-void SPI_Transmit(uint8_t *data, uint8_t size);
+void Init_seq(void);
 
 /*******************************************************************************/
 /*******************************************************************************/

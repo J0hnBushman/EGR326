@@ -28,6 +28,9 @@
 #include "ADC.h"
 #include "health_bar.h"
 #include "Flash_Access.h"
+#include "sevenSeg.h"
+#include "health_bar.h"
+
 
 /*******************************************************************************/
 //                          USER DEFINES

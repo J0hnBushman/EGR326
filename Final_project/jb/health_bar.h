@@ -40,7 +40,7 @@
 #define LATCH_IN               (LATCH_PORT->IDR & 1UL << LATCH_PIN)
 #define LATCH_PUPDR(X)         (LATCH_PORT->PUPDR &= ~(0x03UL<<(2*LATCH_PIN))); (LATCH_PORT->PUPDR |= X<<(2*LATCH_PIN))
 
-#define CLOCK_PIN            (2)
+#define CLOCK_PIN            (3)
 #define CLOCK_PORT           (GPIOC)
 #define CLOCK_OUT(X)         ( (X)? (CLOCK_PORT->ODR |= (1UL << CLOCK_PIN)) : (CLOCK_PORT->ODR &= ~(1UL << CLOCK_PIN)) )
 #define IS_HIGH_CLOCK				 (CLOCK_PORT->ODR & (1UL << CLOCK_PIN))?1:0
@@ -63,10 +63,6 @@ void HealthMax(void);
 void tim5_init(void);
 
 void TIM5_IRQHandler(void);
-
-//void SysTick_Init(void);
-//void delayMS(uint16_t n);
-//void delayMicroS(uint16_t n);
 
 
 

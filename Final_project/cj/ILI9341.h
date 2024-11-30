@@ -35,7 +35,7 @@
 #define OLIVE       0x2121
 #define CYAN        0x0C0C
 #define MAGENTA     0xF1F1
-#define BROWN       0x6161
+#define BROWN       0x6a46
 #define PINK        0xF3F3
 #define JADE        0x0202
 
@@ -46,19 +46,19 @@
 #define LCD_RST_PORT GPIOC
 #define LCD_RST      12U
 
-#define LCD_CS_PORT GPIOC
-#define LCD_CS      8U
+#define LCD_CS_PORT GPIOA
+#define LCD_CS      4U
 
 #define LCD_DCX_PORT GPIOC
 #define LCD_DCX      10U
 
-#define SD_CS_PORT GPIOB
-#define SD_CS      6U
+#define SD_CS_PORT GPIOA
+#define SD_CS      4U
 
-#define SD_DI_PORT GPIOA
+#define SD_DI_PORT GPIOA //mosi
 #define SD_DI      7U
 
-#define SD_DO_PORT GPIOA
+#define SD_DO_PORT GPIOA //miso
 #define SD_DO      6U
 
 #define SD_SCK_PORT GPIOA

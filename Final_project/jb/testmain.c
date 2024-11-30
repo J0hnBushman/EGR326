@@ -28,11 +28,29 @@ int servo = 1000;
 char value = 0;
 char timeDate[14];
 
+
+//PHOTO SENSOR STUFF
 int lightLvl = 0;
 
+//SEVEN SEGMENT STUFF
+int count = 60;
+int old_count = 0;
+
+int num[] = {0x7E,  //0
+							0x30,  //1
+							0x6D,  //2
+							0x79,  //3
+							0x33,  //4
+							0x5B,  //5
+							0x5F,  //6
+							0x70,  //7
+							0x7F,  //8
+							0x7B,  //9
+							0x01}; //-
 
 
-/*DIGITAL MONSTER STURCTURE*/     				//THIS IS A WOKRING PROGRESS
+
+/*DIGITAL MONSTER STURCTURE*/     				//************THIS IS A WOKRING PROGRESS************
 typedef struct{
 	uint8_t tail_wag;
 	//int state; //Monsters current expression
@@ -52,7 +70,7 @@ int state = MENU_STATE;
 uint8_t update_screen = 1; 
 
 uint8_t tmp = 0; 
-//temp value to create a blue highlight value
+//temp value to create a GRAY highlight value
 
 //RTC_data and point
 char RTC_data;
@@ -92,23 +110,28 @@ int main(void)
 	  sonar_gpio_init();
 		TIM1_setup();
 		timer_init();
+		tim5_init();
+		init_ShiftRegister();
+		//sevenSeg_init();
+		HealthCurrent();
+		Init_seq();
 		adc_init();
 	
 	__enable_irq();
 	
 	 
 	menu = mainMenu;
-	TIM1->CCR1 = 1700;		//adjust servo position PWM
-	TIM1->CCR2 = 1700;		//adjust servo position PWM
-	TIM1->CCR3 = 1700;		//adjust servo position PWM
+	//TIM1->CCR1 = 1700;		//adjust servo position PWM
+	//TIM1->CCR2 = 1700;		//adjust servo position PWM
+	//TIM1->CCR3 = 1700;		//adjust servo position PWM
       while (1)
     {
 			switch(state){
 //----------------------------content------------------------------
 				case(content):
 				default:
-					menu = ExpContent;
-					
+					//menu = ExpContent;
+					menu = ExpHappy;
 				
 					break;
 				
@@ -137,18 +160,12 @@ int main(void)
 		
 //-------------------------------DEAD---------------------------------
 				case(dead):
-					menu = ExpDead;
+					menu = ExpSleepy;
 				
 					break;
 				
-				
-//-------------------------------FEEDING---------------------------------
-				case(feeding):
-				
-					break;
-				
+//--------------------------------MENU-------------------------------------
 				case(MENU_STATE):
-					
 				
 				
 					break;
@@ -164,14 +181,12 @@ int main(void)
 			}
 			
 			
-			
 			/*DISTANCE TAIL WAG*/
 			distance = abs(dist());	//get the distance value
 			//check servo position
 			if((distance < 200)){ 
-				if(menu != ExpHappy){
+				if(menu != happy){
 					update_screen = 1;
-					//TIM1->CCR3 = 1700;		//adjust servo position PWM
 				}
 				state = happy;
 			}else{
@@ -190,6 +205,13 @@ int main(void)
 			}else{
 				state = content;
 			}
+			
+			if(count != old_count){
+				old_count = count; 
+				sevenSeg_write(0x05, num[count/10]);
+				sevenSeg_write(0x04, num[count%10]);
+			}
+
 		}
 }
 
@@ -209,11 +231,11 @@ int main(void)
 	void EXTI15_10_IRQHandler(void){
 
 		if(EXTI->PR & 1<<HALL_PIN){
-			foodCount  = 1;
-			
+			HealthPlusPlus();
 			}
 		
-			if(EXTI->PR & 1<<HALL2_PIN){
+			
+		if(EXTI->PR & 1<<HALL2_PIN){
 				petFlag = 1; 
 			/*
 				if((HALL2_IN) && hall2_FLAG == 1){
@@ -251,11 +273,11 @@ int main(void)
 			}else{
 					TIM2->CNT = value*2; //keeps current value 
 			}
-		
+		//confirm selected times
 			if(pos == 13){
 				menu_flag = 0;
 			}
-		
+		//cancel menu select
 			if(pos == 12){
 				menu_flag = 0;
 				RTC_Second = 0; //these should probably be the current value, not zero but I'll have to change it afer more testing
@@ -297,14 +319,14 @@ int main(void)
 		menu_flag = 0;
 	}
 	
+	//**START UP SCREEN***   //not set up yet
 	if(menu == startUpScreen){
 		menu_flag = 0;
 	}
-	
+	//**SETTINGS SCREEN***	//not set up yet
 	if(menu == settings){
 		menu_flag = 0; 
 	}
-	
 	
 		EXTI->PR |= (1<<4);
 }
@@ -381,18 +403,18 @@ void Set_Date(uint8_t RTC_Year, uint8_t RTC_Month, uint8_t RTC_Date){
  ===========================================================================================*/
 void Read_Date(void){
 	I2C1_byteRead(SLAVE_ADDR, MONTH_ADDR, RTC_Data_ptr);
-	Draw_Char_BG(140, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(150, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(160, 5, '/', WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(140, 5, MSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(150, 5, LSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(160, 5, '/', BROWN, WHITE, &font_ubuntu_mono_24);
 	//read the current min from the RTC, stores value in the RTC_data pointer
 	I2C1_byteRead(SLAVE_ADDR, DATE_ADDR, RTC_Data_ptr);
-	Draw_Char_BG(170, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(180, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(190, 5, '/', WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(170, 5, MSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(180, 5, LSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(190, 5, '/', BROWN, WHITE, &font_ubuntu_mono_24);
 	//read the current second from the RTC, stores value in the RTC_data pointer
 	I2C1_byteRead(SLAVE_ADDR, YEAR_ADDR, RTC_Data_ptr);
-	Draw_Char_BG(200, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(210, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(200, 5, MSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(210, 5, LSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
 }
 
 
@@ -411,18 +433,18 @@ void Read_Date(void){
 void Read_Time(void){
 	//read the current hour from the RTC, stores value in the RTC_data pointer
 	I2C1_byteRead(SLAVE_ADDR, HOURS_ADDR, RTC_Data_ptr);
-	Draw_Char_BG(10, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(20, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(30, 5, ':', WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(10, 5, MSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(20, 5, LSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(30, 5, ':', BROWN, WHITE, &font_ubuntu_mono_24);
 	//read the current min from the RTC, stores value in the RTC_data pointer
 	I2C1_byteRead(SLAVE_ADDR, MINUTES_ADDR, RTC_Data_ptr);
-	Draw_Char_BG(40, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(50, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(60, 5, ':', WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(40, 5, MSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(50, 5, LSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(60, 5, ':', BROWN, WHITE, &font_ubuntu_mono_24);
 	//read the current second from the RTC, stores value in the RTC_data pointer
 	I2C1_byteRead(SLAVE_ADDR, SECONDS_ADDR, RTC_Data_ptr);
-	Draw_Char_BG(70, 5, MSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
-	Draw_Char_BG(80, 5, LSB(RTC_data), WHITE, BLACK, &font_ubuntu_mono_24);
+	Draw_Char_BG(70, 5, MSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
+	Draw_Char_BG(80, 5, LSB(RTC_data), BROWN, WHITE, &font_ubuntu_mono_24);
 }
 
 
@@ -462,11 +484,11 @@ void Set_TD(void){
 				value = timeDate[pos];
 			if(pos != tmp){
 				if(tmp<=11){
-					Draw_Char_BG(180+((tmp%2)*20), 30+((tmp/2)*30), (timeDate[tmp] + '0'), BLACK, WHITE, &font_ubuntu_mono_24);
+					Draw_Char_BG(180+((tmp%2)*20), 30+((tmp/2)*30), (timeDate[tmp] + '0'), WHITE, BROWN, &font_ubuntu_mono_24);
 				}else if(tmp == 12){
-					Draw_String_BG(30, 210, "Cancel", BLACK, WHITE, &font_ubuntu_mono_24);
+					Draw_String_BG(30, 210, "Cancel", WHITE, BROWN, &font_ubuntu_mono_24);
 				}else{
-					Draw_String_BG(160, 210, "Enter", BLACK, WHITE, &font_ubuntu_mono_24);
+					Draw_String_BG(160, 210, "Enter", WHITE, BROWN, &font_ubuntu_mono_24);
 				}
 				
 			}
@@ -477,11 +499,11 @@ void Set_TD(void){
 		
 		//PRINTS THE CURRENT POSITION AND VALUE 
 		if(pos<=11){
-			Draw_Char_BG(180+((pos%2)*20), 30+((pos/2)*30), (value + '0'), BLACK, BLUE, &font_ubuntu_mono_24);
+			Draw_Char_BG(180+((pos%2)*20), 30+((pos/2)*30), (value + '0'), WHITE, GRAY, &font_ubuntu_mono_24);
 		}else if(pos == 12){
-			Draw_String_BG(20, 210, "Cancel", BLACK, BLUE, &font_ubuntu_mono_24);
+			Draw_String_BG(20, 210, "Cancel", WHITE, GRAY, &font_ubuntu_mono_24);
 		}else{
-			Draw_String_BG(180, 210, "Enter", BLACK, BLUE, &font_ubuntu_mono_24);
+			Draw_String_BG(180, 210, "Enter", WHITE, GRAY, &font_ubuntu_mono_24);
 		}
 		
 	}						
@@ -545,14 +567,14 @@ void MENU_SCREENS(void){
 							TIM2->ARR = 7; //set the number of options
 					
 							//clear screen then read the date
-							Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+							Fill_Rect(12, 30, 288, 226, BROWN); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
 							Read_Date();
 					
 						//display options
-							Draw_String_BG(50, 80, "Time Set:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(50, 120, "Help:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(50, 160, "More Info:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(50, 200, "Cancel", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(50, 80, "Time Set:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(50, 120, "Help:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(50, 160, "More Info:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(50, 200, "Cancel", WHITE, BROWN, &font_ubuntu_mono_24);
 					
 							while(menu_flag){
 								Read_Time();
@@ -560,9 +582,9 @@ void MENU_SCREENS(void){
 								pos = TIM2->CNT/2; //set position
 								
 								if(temp == pos){
-									Draw_String_BG(30, 80+(pos*40), " ", BLUE, BLUE, &font_ubuntu_mono_24);
+									Draw_String_BG(30, 80+(pos*40), " ", GRAY, GRAY, &font_ubuntu_mono_24);
 								}else{
-									Draw_String_BG(30, 80+(temp*40), " ", WHITE, WHITE, &font_ubuntu_mono_24);
+									Draw_String_BG(30, 80+(temp*40), " ", BROWN, BROWN, &font_ubuntu_mono_24);
 								}
 								
 								
@@ -573,31 +595,31 @@ void MENU_SCREENS(void){
 //--------------------TIME SET MENU-------------------------------
 				case timMenu:	
 					menu_flag = 1; 
-							Fill_Rect(12, 30, 288, 226, WHITE);
-							Draw_String_BG(20, 30, "Set Second:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 60, "Set Minute:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 90, "Set Hour:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 120, "Set date:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 150, "Set Month:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 180, "Set Year:", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 210, "Cancel", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(180, 210, "Enter", BLACK, WHITE, &font_ubuntu_mono_24);
+							Fill_Rect(12, 30, 288, 226, BROWN);
+							Draw_String_BG(20, 30, "Set Second:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 60, "Set Minute:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 90, "Set Hour:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 120, "Set date:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 150, "Set Month:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 180, "Set Year:", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 210, "Cancel", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 210, "Enter", WHITE, BROWN, &font_ubuntu_mono_24);
 				
 				
 				
-							Draw_String_BG(180, 30, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(180, 60, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(180, 90, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(180, 120, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(180, 150, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(180, 180, "0", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 30, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 60, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 90, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 120, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 150, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(180, 180, "0", WHITE, BROWN, &font_ubuntu_mono_24);
 				
-							Draw_String_BG(200, 30, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(200, 60, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(200, 90, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(200, 120, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(200, 150, "0", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(200, 180, "0", BLACK, WHITE, &font_ubuntu_mono_24);
+							Draw_String_BG(200, 30, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(200, 60, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(200, 90, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(200, 120, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(200, 150, "0", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(200, 180, "0", WHITE, BROWN, &font_ubuntu_mono_24);
 				
 							Set_TD();
 				menu = mainMenu;
@@ -609,9 +631,9 @@ void MENU_SCREENS(void){
 					Read_Date();
 					menu_flag = 1;
 					TIM2->ARR = 3;
-						Fill_Rect(12, 30, 288, 226, WHITE);//Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-							Draw_String_BG(20, 120, "HELP MENU SCREEN", BLACK, WHITE, &font_ubuntu_mono_24);
-							Draw_String_BG(20, 160, "Press to contiune", BLACK, WHITE, &font_ubuntu_mono_24);
+					Fill_Screen(BROWN);
+							Draw_String_BG(20, 120, "HELP MENU SCREEN", WHITE, BROWN, &font_ubuntu_mono_24);
+							Draw_String_BG(20, 160, "Press to contiune", WHITE, BROWN, &font_ubuntu_mono_24);
 						while(menu_flag){
 							Read_Time();
 						}
@@ -623,9 +645,9 @@ void MENU_SCREENS(void){
 				case infoMenu:
 					Read_Date();
 					menu_flag = 1; 
-						Fill_Rect(12, 30, 288, 226, WHITE);  //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-						Draw_String_BG(20, 120, "INFO MENU SCREEN:", BLACK, WHITE, &font_ubuntu_mono_24);
-						Draw_String_BG(20, 160, "Press to contiune", BLACK, WHITE, &font_ubuntu_mono_24);
+						Fill_Screen(BROWN);
+						Draw_String_BG(20, 120, "INFO MENU SCREEN:", WHITE, BROWN, &font_ubuntu_mono_24);
+						Draw_String_BG(20, 160, "Press to contiune", WHITE, BROWN, &font_ubuntu_mono_24);
 					while(menu_flag){
 							Read_Time();
 						}
@@ -636,11 +658,7 @@ void MENU_SCREENS(void){
 //-------------------------------------START UP SCREEN------------------------------------
 				case startUpScreen:
 					menu_flag = 1;
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*
-					Rotate_Display(1); //landscape inverted
-					//Draw_Bitmap((TFT_WIDTH - contentImage->width) / 2, (TFT_HEIGHT - contentImage->height) / 2, contentImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
-						//delayMS(3000);
-						Fill_Screen(BLACK);
+					Fill_Screen(BROWN);
 				while(menu_flag){}
 				menu = mainMenu;
 				break;
@@ -652,53 +670,44 @@ void MENU_SCREENS(void){
 					TIM2->ARR = 3;
 								TIM2->CNT = 0; 
 								pos = 0;
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-					Draw_String_BG(20, 80, "Open Settings?", BLACK, WHITE, &font_ubuntu_mono_24);
+					Fill_Screen(BROWN);
+					Draw_String_BG(20, 80, "Open Settings?", WHITE, BROWN, &font_ubuntu_mono_24);
 					while(menu_flag){
 						
-						Draw_String_BG(20, 120, "Yes", BLACK, WHITE, &font_ubuntu_mono_24);
+						Draw_String_BG(20, 120, "Yes", WHITE, BROWN, &font_ubuntu_mono_24);
 					}
 					break;
 					
 					
 //-----------------------------------------CONTENT-----------------------------------------
 				case ExpContent:
-					Rotate_Display(0);
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+					Rotate_Display(2);
+					Fill_Screen(BROWN);
 					Draw_Bitmap((TFT_WIDTH - contentImage->width) / 2, (TFT_HEIGHT - contentImage->height) / 2, contentImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
 				break;
 				
 				
 //-----------------------------------------HAPPY-----------------------------------------
 				case ExpHappy:
-					Rotate_Display(0);
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+					Rotate_Display(2);
+					Fill_Screen(BROWN);
 					Draw_Bitmap((TFT_WIDTH - HappyImage->width) / 2, (TFT_HEIGHT - HappyImage->height) / 2, HappyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
 					break;
 				
 				
 //-----------------------------------------HUNGRY-----------------------------------------
 				case ExpHungry:
-					Rotate_Display(0);
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
+					Rotate_Display(2);
+					Fill_Screen(BROWN);
 					Draw_Bitmap((TFT_WIDTH - HungryImage->width) / 2, (TFT_HEIGHT - HungryImage->height) / 2, HungryImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
 					break;
 				
 				
 //-----------------------------------------SLEEPY-----------------------------------------
 				case ExpSleepy:
-					Rotate_Display(0);
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-					Draw_Bitmap((TFT_WIDTH - HappyImage->width) / 2, (TFT_HEIGHT - HappyImage->height) / 2, HappyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
-
-					break;
-				
-				
-//-----------------------------------------DEAD-----------------------------------------
-				case ExpDead:
-					Rotate_Display(0);
-					Fill_Rect(12, 30, 288, 226, WHITE); //Moves sp L to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
-					Draw_Bitmap((TFT_WIDTH - DeadImage->width) / 2, (TFT_HEIGHT - DeadImage->height) / 2, DeadImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+					Rotate_Display(2);
+					Fill_Screen(BROWN);
+					Draw_Bitmap((TFT_WIDTH - SleepyImage->width) / 2, (TFT_HEIGHT - SleepyImage->height) / 2, SleepyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
 
 					break;
 				
@@ -706,6 +715,20 @@ void MENU_SCREENS(void){
 				
 }
 
+
+
+void TIM5_IRQHandler(void)
+{
+	if(state != MENU_STATE){
+		count --; 
+	if(count <= 0){
+		count = 60; 
+		HealthMinusMinus();
+		}
+	}
+	
+	TIM5->SR &= ~0x0001U;
+}
 
 
 // EOF

@@ -554,6 +554,36 @@
               <FileType>5</FileType>
               <FilePath>.\servo.h</FilePath>
             </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ADC.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ADC.h</FilePath>
+            </File>
+            <File>
+              <FileName>health_bar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\health_bar.h</FilePath>
+            </File>
+            <File>
+              <FileName>health_bar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\health_bar.c</FilePath>
+            </File>
+            <File>
+              <FileName>sevenSeg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sevenSeg.c</FilePath>
+            </File>
+            <File>
+              <FileName>sevenSeg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\sevenSeg.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

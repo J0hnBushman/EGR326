@@ -1,5 +1,6 @@
 #include "health_bar.h"
 #include "stdbool.h"
+#include "sevenSeg.h"
 
 /*
 3 pins control the operation of the 74HC595 Shift Register:
@@ -43,6 +44,19 @@ _______________________________|
 */
 
 static uint8_t health = 8;
+int count = 60;
+
+int num[] = {0x7E,  //0
+							0x30,  //1
+							0x6D,  //2
+							0x79,  //3
+							0x33,  //4
+							0x5B,  //5
+							0x5F,  //6
+							0x70,  //7
+							0x7F,  //8
+							0x7B,  //9
+							0x01}; //-
 
 void init_ShiftRegister(void){
 	
@@ -205,7 +219,7 @@ void tim5_init(void){
 	
 	RCC->APB1ENR |= (1<<3);
 	TIM5->PSC = 16000 - 1; 
-	TIM5->ARR = 60000 - 1;
+	TIM5->ARR = 1000 - 1;
 	TIM5->CNT = 0; /* clear counter */
 	TIM5->CR1 = 1; /* enable TIM5 */
 	TIM5->CR1	=   0x0001U;
@@ -216,8 +230,16 @@ void tim5_init(void){
 	
 }
 
+
+
 void TIM5_IRQHandler(void)
 {
+	count --; 
+	if(count <= 0){
+		count = 60; 
+		HealthMinusMinus();
+	}
 	TIM5->SR &= ~0x0001U;
-	HealthMinusMinus();
+	sevenSeg_write(0x05, num[count/10]);
+	sevenSeg_write(0x04, num[count%10]);
 }
