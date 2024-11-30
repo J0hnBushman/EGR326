@@ -6,9 +6,8 @@ int main(void){
 	tim5_init();
 	init_ShiftRegister();
 	//HealthPlusPlus();
-	HealthCurrent();
 	while(1){
-		
+		HealthCurrent();
 	}
 	
 	return 0;

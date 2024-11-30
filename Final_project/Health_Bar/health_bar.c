@@ -43,7 +43,7 @@ _______________________________|
 */
 
 static uint8_t health = 8;
-
+bool flag = 1;
 void init_ShiftRegister(void){
 	
 	RCC->AHB1ENR |= (1<<2);
@@ -225,7 +225,6 @@ void delayMicroS(uint16_t n)
 }
 
 void tim5_init(void){
-		/////setting up TIM5_ch1 on GPIO B pin 4 as a timer interupt 
 	//Setting the pin to AF2
 	
 	RCC->APB1ENR |= (1<<3);
@@ -244,5 +243,7 @@ void tim5_init(void){
 void TIM5_IRQHandler(void)
 {
 	TIM5->SR &= ~0x0001U;
+	
 	HealthMinusMinus();
+		
 }
