@@ -4,7 +4,24 @@ COURSE:
 DATE:
 DESCRIPTION:
 *********************************************************************************/
- 
+/* NOTES TO SELF
+
+- servos all on timer1
+- TIM1->CCR1/2/3 -> 1000=LEFT, 1500=CENTER, 2000=RIGHT
+
+	NEXT UP
+	
+- [x] EEPROM
+- [x] WATCHDOG TIMER
+- [ ] Only want one servo on at a time
+- [x] Add sound to states
+- [ ] Want to fix the light sensor to be more precise
+
+- MAYBE Reset the 7-seg timer when fed.
+	b/c rn it'll complete the time cycle without losing health, then
+	it will lose health on the subsequent cycles like normal.
+
+*/
  
  
 /*********************************************************************************
@@ -15,24 +32,44 @@ DESCRIPTION:
 /*********************************************************************************
 																				Global Variables
 *********************************************************************************/
-uint8_t hall_FLAG = 1;
-uint8_t hall2_FLAG = 1;
+typedef struct{
+	uint32_t eye;
+	uint32_t eyelid;
+	uint32_t tongue;
+	bool is_close;
+}Servo;
+
+Servo Mimic_Servo = {1000,1000,1000,false};
+bool test = 0;
+bool tongue_wag = 0;
+
+uint8_t random_seconds = 1;
+uint32_t random_seconds_counter = 0;
+
 uint8_t swPress = 0; 
-uint8_t foodCount = 0;
+uint8_t foodCount = 0; // IN CASE OF ADDING OVERFEEDING
 uint8_t petFlag = 0;
-int last = 0;
-int current; 
-double period; 
-int pos = 0;
+
+bool Expression_Transition = true;
+
+unsigned long long Time_New;
+unsigned long long Time_Old;
+
+int last = 0; // FOR MENU SYSTEM
+int current;  // FOR MENU SYSTEM
+double period; // FOR MENU SYSTEM
+int pos = 0; // FOR ROTARY ENCODER
 int servo = 1000;
-char value = 0;
-char timeDate[14];
+char value = 0; // FOR MENU SYSTEM
+char timeDate[14]; // FOR RTC
+
+char* health_ptr;
 
 
 //PHOTO SENSOR STUFF
 int lightLvl = 0;
 
-//SEVEN SEGMENT STUFF
+///////////////// SEVEN SEGMENT STUFF //////////////////////////////
 int count = 60;
 int old_count = 0;
 
@@ -49,7 +86,7 @@ int num[] = {0x7E,  //0
 							0x01}; //-
 
 
-/***MENU STUFF***/
+///////////////////////// MENU STUFF ////////////////////////////
 //inital screen 
 int menu = startUpScreen; 
 //init state
@@ -58,12 +95,19 @@ int prev_state;
 
 //temp valu is for the 
 uint8_t tmp = 0;
+							
+uint8_t CNT_Old;
+uint8_t CNT_New;
 
-//RTC_data and point
+
+
+////////////////////////// RTC VALUES //////////////////////////////
+//RTC_data and pointER
 char RTC_data;
 char *RTC_Data_ptr = &RTC_data;
+							
+bool refresh_WDT = false;
 
-//RTC VALUES
 uint8_t RTC_Hour;
 uint8_t RTC_Minute;
 uint8_t RTC_Second;
@@ -94,55 +138,214 @@ int main(void)
 		I2C_init();
 		Encoder_init();
 	  stepper_init();
-	  sonar_gpio_init();
+	  
 		TIM1_setup();
-		timer_init();
 		tim5_init();
+		Timer6_Init();
+		Timer7_Init();
 		init_ShiftRegister();
 		HealthCurrent();
 		Init_seq();
 		adc_init();
+		WDT_init();
+		sonar_gpio_init();
 	
 	__enable_irq();
 	
 	 
 	menu = mainMenu;
+	health_ptr = &health;
+	
+	
+	//I2C1_byteWrite(EEPROM_SLAVE_ADDR, MEMORY_1 , health); // Store Current Health on EEPROM
+	
+	delayMS(5);
+	
+	//Retrieve_Health(); // Retrieve Current Health from EEPROM
+	
+	//delayMS(1);
+	
+	//HealthCurrent(); // Display Current Health on the Health Bar
+	
 	
       while (1)
     {
+			CNT_Old = TIM2->CNT;
+			
+			if(CNT_New != CNT_Old) IWDG->KR |= 0xAAAA; // If the rotary encoder is used, refresh the WDT
+			
+			if((menu == An_Expression_State) || (refresh_WDT == true)) {
+				WDT_reset();
+				refresh_WDT = false;
+			}
+			
 			switch(state){
 //----------------------------content------------------------------
 				case(content):
-				default:
-					menu = ExpContent;
-
+					IWDG->KR |= 0xAAAA;
+					
+					if(lightLvl <=2 ){ // check sleepy
+						petFlag = 0;
+						state = sleepy;
+						Play_Tone_2();
+						menu = ExpSleepy;
+						Eyelid_Move_To(2570);
+						Expression_Transition = true;
+						break;
+					}
+					
+					if(health>=5){     // check happy via food
+						state = happy;
+						menu = ExpHappy;
+						Play_Tone_1();
+						Eyelid_Move_To(1500); // open
+						Expression_Transition = true;
+						
+						break;
+					}
+					
+					if(petFlag){        // check happy via petting
+						Time_Old = millis(); 
+						state = happy;
+						menu = ExpHappy;
+						Play_Tone_1();
+						Eyelid_Move_To(1500); // open
+						Expression_Transition = true;
+						break;
+					}
+					
+					if(health <= 2){ // check hungry
+						state = hungry;
+						Play_Tone_3();
+						menu = ExpHungry;
+						Eyelid_Move_To(2200); //closed
+						Expression_Transition = true;
+						break;
+					}
+					
+					
 					break;
 				
 				
 //------------------------------HAPPY--------------------------------
 				case(happy):
-					menu = ExpHappy;
+					IWDG->KR |= 0xAAAA;
+					if(lightLvl <=2 ){ // check sleepy
+						petFlag = 0;
+						state = sleepy;
+						Play_Tone_2();
+						menu = ExpSleepy;
+						Eyelid_Move_To(2570);
+						Expression_Transition = true;
+						break;
+					}
 				
+					if(petFlag){            // begin pet flag cool down
+						Time_New = millis();
+						if(Time_New-Time_Old > 3000){
+							petFlag = 0;
+							state = content;
+							Play_Tone_2();
+							menu = ExpContent; 
+							Eyelid_Move_To(1900); // open (HappY)
+							Expression_Transition = true;
+							break;
+						}
+						break;
+					}
+				
+					if(health<5 && health >2){
+						state = content;
+						menu = ExpContent;
+						Play_Tone_2();
+						Eyelid_Move_To(1900); // open (HappY)
+						Expression_Transition = true;
+						break;
+					}
+					
+
+					
+					
+					//menu = ExpHappy;
+					
 					break;
 
 				
 //-----------------------------HUNGRY-----------------------------------
 				case(hungry):
-					menu = ExpHungry;
+					IWDG->KR |= 0xAAAA;
+					
+					if(lightLvl <=2 ){ // check sleepy
+						petFlag = 0;
+						state = sleepy;
+						Play_Tone_4();
+						menu = ExpSleepy;
+						Eyelid_Move_To(2570);
+						Expression_Transition = true;
+						break;
+					}
 				
-								
+					if(health>2){
+						state = happy;
+						menu = ExpHappy;
+						Play_Tone_1();
+						Eyelid_Move_To(1500); // open (HappY)
+						Expression_Transition = true;
+						break;
+					}
+					
+					if(petFlag){        // check happy via petting
+						Time_Old = millis(); 
+						state = happy;
+						menu = ExpHappy;
+						Play_Tone_1();
+						Eyelid_Move_To(1500); // open
+						Expression_Transition = true;
+						break;
+					}
+					
+				
 					break;
 				
 				
 //-------------------------------SLEEPY---------------------------------
 				case(sleepy):
-					menu = ExpSleepy;
-				
+					IWDG->KR |= 0xAAAA;
+					
+					if((lightLvl > 2) && (health < 5) && (health > 2)){ // Lights on -> Sleepy to Content
+						state = content;
+						Play_Tone_2();
+						menu = ExpContent;
+						Eyelid_Move_To(1900); // open (content)
+						Expression_Transition = true;
+						break;
+					}
+					
+					if((lightLvl > 2) && (health >= 5)){ // Lights on -> Sleepy to Happy
+						state = happy;
+						menu = ExpHappy;
+						Play_Tone_1();
+						Eyelid_Move_To(1500); // open
+						Expression_Transition = true;
+						break;
+					}
+					
+					if((lightLvl > 2) && (health <= 2)){ // Lights on -> Sleepy to Hungry
+						state = hungry;
+						menu = ExpHungry;
+						Play_Tone_3();
+						Eyelid_Move_To(2200); //closed
+						Expression_Transition = true;
+						break;
+					}
+					
+					
 					break;
 				
 		
 //-------------------------------DEAD---------------------------------
 				case(dead):
+					IWDG->KR |= 0xAAAA;
 					menu = ExpSleepy;
 				
 					break;
@@ -153,13 +356,19 @@ int main(void)
 				
 					break;
 			}
-			
+				
 				MENU_SCREENS(); //change LCD
 			
 			
 			
 			/*DISTANCE TAIL WAG*/
+			//sonar_gpio_init();
+			
 			distance = abs(dist());	//get the distance value
+			
+			if(distance < 400) {Mimic_Servo.is_close = true;}
+			else{Mimic_Servo.is_close = false;}
+			
 			//check servo position
 			
 			/*CHECK LIGHT LEVEL*/
@@ -170,18 +379,10 @@ int main(void)
 				sevenSeg_write(0x05, num[count/10]);
 				sevenSeg_write(0x04, num[count%10]);
 			}
-
+		CNT_New = CNT_Old;
+		
 		}
 }
-
-
-
-
-
-
-
-
-
 
 
 /*********************************************************************************
@@ -190,6 +391,7 @@ int main(void)
 	void EXTI15_10_IRQHandler(void){
 
 		if(EXTI->PR & 1<<HALL_PIN){
+			test = 1;
 			HealthPlusPlus();
 			}
 		
@@ -215,6 +417,10 @@ int main(void)
 	void EXTI4_IRQHandler(void){
 		swPress ++;
 		
+//		if(state == An_Expression_State){
+//			IWDG->KR |= 0x5555;
+//			 IWDG->RLR |= 0x0; // max reload Value
+//		}
 		
 		//***TIME SET MENU ****
 		if(menu == timMenu){
@@ -285,18 +491,6 @@ int main(void)
 
 
 
-/*********************************************************************************
-																				TIM3_Handler
-*********************************************************************************/
-void TIM3_IRQHandler(void)
-{
-	
-	TIM3->SR &= ~0xFFFFU;
-}
-
-
-
-
 
 
 /*===========================================================================================
@@ -314,13 +508,6 @@ void Set_Time(uint8_t RTC_Hour, uint8_t RTC_Minute, uint8_t RTC_Second){
 	I2C1_byteWrite(SLAVE_ADDR,MINUTES_ADDR,RTC_Minute);
 	I2C1_byteWrite(SLAVE_ADDR,SECONDS_ADDR,RTC_Second);
 }
-
-
-
-
-
-
-
 
 
 /*===========================================================================================
@@ -424,7 +611,7 @@ void Set_TD(void){
 	TIM2->ARR = 27;
 	
 	while(menu_flag){
-		//set up position to change based on the interupt from the rotary encoder
+		//set up position to change based on the interrupt from the rotary encoder
 		//I want to set this such that when the btn on Rotary is pressed the interupt no longer changes position but changes value
 		//this should be the math to cahnge this, I have to do this instead of using a flag due to the inturrtp counting twice
 		
@@ -517,6 +704,7 @@ void MENU_SCREENS(void){
 							TIM2->ARR = 7; //set the number of options
 					
 							//clear screen then read the date
+							Rotate_Display(0);
 							Fill_Rect(12, 30, 288, 226, BROWN); //Moves sp l to R, moves sp t to b /*NOTE THIS IS JUST TO CLEAR THE OLD TXT THERE, while keep the time at top*/
 							Read_Date();
 					
@@ -544,6 +732,8 @@ void MENU_SCREENS(void){
 							
 //--------------------TIME SET MENU-------------------------------
 				case timMenu:	
+					
+				
 					menu_flag = 1; 
 							Fill_Rect(12, 30, 288, 226, BROWN);
 							Draw_String_BG(20, 30, "Set Second:", WHITE, BROWN, &font_ubuntu_mono_24);
@@ -554,8 +744,6 @@ void MENU_SCREENS(void){
 							Draw_String_BG(20, 180, "Set Year:", WHITE, BROWN, &font_ubuntu_mono_24);
 							Draw_String_BG(20, 210, "Cancel", WHITE, BROWN, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 210, "Enter", WHITE, BROWN, &font_ubuntu_mono_24);
-				
-				
 				
 							Draw_String_BG(180, 30, "0", WHITE, BROWN, &font_ubuntu_mono_24);
 							Draw_String_BG(180, 60, "0", WHITE, BROWN, &font_ubuntu_mono_24);
@@ -574,10 +762,13 @@ void MENU_SCREENS(void){
 							Set_TD();
 				menu = mainMenu;
 				menu_flag = 1;
+				
+				
 					break;
 				
 //--------------------------------HELP MENU------------------------------------------
 				case helpMenu:
+				
 					Read_Date();
 					menu_flag = 1;
 					TIM2->ARR = 3;
@@ -631,34 +822,45 @@ void MENU_SCREENS(void){
 					
 //-----------------------------------------CONTENT-----------------------------------------
 				case ExpContent:
-					Rotate_Display(2);
-					Fill_Screen(BROWN);
-					Draw_Bitmap((TFT_WIDTH - contentImage->width) / 2, (TFT_HEIGHT - contentImage->height) / 2, contentImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+					if(Expression_Transition == true){
+						Rotate_Display(0);
+						Fill_Screen(BROWN);
+						Draw_Bitmap((TFT_WIDTH - contentImage->width) / 2, (TFT_HEIGHT - contentImage->height) / 2, contentImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+						Expression_Transition = false;
+					}
 				break;
 				
 				
 //-----------------------------------------HAPPY-----------------------------------------
 				case ExpHappy:
-					Rotate_Display(2);
-					Fill_Screen(BROWN);
-					Draw_Bitmap((TFT_WIDTH - HappyImage->width) / 2, (TFT_HEIGHT - HappyImage->height) / 2, HappyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+					if(Expression_Transition == true){
+						Rotate_Display(0);
+						Fill_Screen(BROWN);
+						Draw_Bitmap((TFT_WIDTH - HappyImage->width) / 2, (TFT_HEIGHT - HappyImage->height) / 2, HappyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+						Expression_Transition = false;
+					}
 					break;
 				
 				
 //-----------------------------------------HUNGRY-----------------------------------------
 				case ExpHungry:
-					Rotate_Display(2);
-					Fill_Screen(BROWN);
-					Draw_Bitmap((TFT_WIDTH - HungryImage->width) / 2, (TFT_HEIGHT - HungryImage->height) / 2, HungryImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+					if(Expression_Transition == true){
+						Rotate_Display(0);
+						Fill_Screen(BROWN);
+						Draw_Bitmap((TFT_WIDTH - HungryImage->width) / 2, (TFT_HEIGHT - HungryImage->height) / 2, HungryImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+						Expression_Transition = false;
+					}
 					break;
 				
 				
 //-----------------------------------------SLEEPY-----------------------------------------
 				case ExpSleepy:
-					Rotate_Display(2);
-					Fill_Screen(BROWN);
-					Draw_Bitmap((TFT_WIDTH - SleepyImage->width) / 2, (TFT_HEIGHT - SleepyImage->height) / 2, SleepyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
-
+					if(Expression_Transition == true){
+						Rotate_Display(0);
+						Fill_Screen(BROWN);
+						Draw_Bitmap((TFT_WIDTH - SleepyImage->width) / 2, (TFT_HEIGHT - SleepyImage->height) / 2, SleepyImage); // Displays a scaled image of an apple. (Small to maintain 32kB flash limit on Keil)
+						Expression_Transition = false;
+					}
 					break;
 				
 			}
@@ -666,20 +868,58 @@ void MENU_SCREENS(void){
 }
 
 
-
 void TIM5_IRQHandler(void)
 {
+	random_seconds_counter++;
 	if(state != MENU_STATE){
 		count --; 
 	if(count <= 0){
 		count = 60; 
 		HealthMinusMinus();
+		
+
+		//Store_Current_Health();
+		
 		}
+	}
+	
+	tongue_wag = (tongue_wag)? 0:1;
+		
+		if(Mimic_Servo.is_close || petFlag){
+			Tongue_Move_To((tongue_wag)? 1000:2000);
+		}
+		
+	if(random_seconds_counter == random_seconds){
+		random_seconds_counter = 0;
+		Eye_Move_To(rand()%((1800-1000)+1)+1000 );
+		random_seconds = rand()%(8)+1;
 	}
 	
 	TIM5->SR &= ~0x0001U;
 }
 
+/// @brief function just to store health in the EEPROM
+void Store_Current_Health(void){
+	I2C1_byteWrite(EEPROM_SLAVE_ADDR, MEMORY_1 , health);
+}
+
+/// @brief fucntion just to retrieve health from the EEPROM
+void Retrieve_Health(void){
+	I2C1_byteRead(EEPROM_SLAVE_ADDR, MEMORY_1 , health_ptr);
+}
+
+/// @brief Initialize Watchdog Timer
+void WDT_init(void){
+	IWDG->KR |= 0x5555; // Write to Access PR and RLR
+	IWDG->PR |= 0x6; // Prescalar max timeout 32768ms
+	IWDG->RLR |= 0xFFF; // max reload Value
+	IWDG->KR |= 0xCCCC; // Write to Start Watchdog Timer
+}
+
+/// @brief Reset Watchdog Timer
+void WDT_reset(void){
+	IWDG->KR |= 0xAAAA; // Write to Reset Counter
+}
 
 // EOF
 

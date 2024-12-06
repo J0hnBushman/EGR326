@@ -4,6 +4,8 @@
 // Buzzer on PC6, TIM8 Channel 1
 int tone_state = -1;
 
+unsigned long long milliseconds = 0;
+
 // Public function to keep track of milliseconds
 void Timer7_Init(void){
     RCC->APB1ENR |= (1<<5); // Enable TIM7 Clock
@@ -82,7 +84,7 @@ void Buzzer_Stop(void) {
 void TIM7_IRQHandler(void)
 {
     TIM7->SR &= ~0x0001U;  // Clear the interrupt flag
-    
+    milliseconds+=300;
     switch(tone_state){
         /////////////////////////// TONE 1 ///////////////////////////
         case (TONE1_0):
@@ -185,4 +187,8 @@ void TIM7_IRQHandler(void)
             Buzzer_Stop();
         break;
     }
+}
+
+unsigned long long millis(void){
+	return milliseconds;
 }

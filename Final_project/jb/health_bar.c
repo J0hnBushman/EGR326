@@ -43,7 +43,7 @@ _______________________________|
 68ohm resistors for Green
 */
 
-static uint8_t health = 8;
+uint8_t health = 4;
 
 void init_ShiftRegister(void){
 	

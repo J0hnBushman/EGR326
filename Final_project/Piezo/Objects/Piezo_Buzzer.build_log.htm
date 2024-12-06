@@ -8,7 +8,7 @@ Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
 License Information: Charles Norton
 GVSU
 User-based license: Keil MDK Community (non-commercial free of charge)
-Valid until: May 31 2033. Cached until: Dec 6 2024
+Valid until: May 31 2033. Cached until: Dec 9 2024
  
 Tool Versions:
 Toolchain:       Keil MDK Community (non-commercial free of charge  Version: 5.38.0.0
@@ -34,23 +34,26 @@ Piezo.c(1): warning: In file included from...
 ./Piezo.h(149): warning: no newline at end of file [-Wnewline-eof]
 #endif
       ^
-Piezo.c(29): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                GPIOC->MODER &= ~(0x3 << 2*6);
-                             ~~ ^~~~~~~~~~~~~
-Piezo.c(70): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    TIM3->CR1 &= ~0x01;  // Disable Timer 3 to stop the buzzer
+Piezo.c(25): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+    GPIOC->MODER &= ~(0x03 << (2 * 6));      // Clear mode for PC6
+                 ~~ ^~~~~~~~~~~~~~~~~~
+Piezo.c(27): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+    GPIOC->AFR[0] &= ~(0x0F << (4 * 6));     // Clear alternate function for PC6
+                  ~~ ^~~~~~~~~~~~~~~~~~
+Piezo.c(36): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+    TIM8->CCMR1 &= ~(0x7 << 4);              // Clear OC1M bits (reset mode)
+                ~~ ^~~~~~~~~~~
+Piezo.c(78): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+    TIM8->CR1 &= ~0x01;  // Disable Timer 8 to stop the buzzer
               ~~ ^~~~~
-Piezo.c(71): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                GPIOC->MODER &= ~(0x3 << 2*6);
-                             ~~ ^~~~~~~~~~~~~
-Piezo.c(194): warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-5 warnings generated.
+Piezo.c(79): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+    GPIOC->MODER &= ~(0x03 << (2 * 6));   // Reset PC6 mode to input
+                 ~~ ^~~~~~~~~~~~~~~~~~
+6 warnings generated.
 compiling Piezo.c...
 linking...
-Program Size: Code=1308 RO-data=484 RW-data=4 ZI-data=1636  
-".\Objects\Piezo_Buzzer.axf" - 0 Error(s), 5 Warning(s).
+Program Size: Code=1344 RO-data=484 RW-data=4 ZI-data=1636  
+".\Objects\Piezo_Buzzer.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -93,12 +96,12 @@ Package Vendor: Keil
       Source file:   Source/retarget_io.c
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
-      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f446xx.s
-      Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
-      Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
       Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
-Build Time Elapsed:  00:00:01
+      Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
+      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f446xx.s
+      Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
+      Source file:   MDK/Device/Source/ARM/STM32F446xx_OPT.s
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

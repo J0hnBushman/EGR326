@@ -49,6 +49,7 @@
 #define CLOCK_IN             (CLOCK_PORT->IDR & 1UL << CLOCK_PIN)
 #define CLOCK_PUPDR(X)       (CLOCK_PORT->PUPDR &= ~(0x03UL<<(2*CLOCK_PIN))); (CLOCK_PORT->PUPDR |= X<<(2*CLOCK_PIN))
 
+extern uint8_t health;
 
 void init_ShiftRegister(void);
 uint8_t HealthCurrent(void);
@@ -63,6 +64,8 @@ void HealthMax(void);
 void tim5_init(void);
 
 void TIM5_IRQHandler(void);
+
+
 
 
 

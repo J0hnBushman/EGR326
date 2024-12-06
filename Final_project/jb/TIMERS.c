@@ -31,26 +31,4 @@ void timer_init(void){
 	//TIM3->SR		&= ~0xFFFFU;
 	//TIM3->DIER		=   0x001;
 	//NVIC_EnableIRQ(TIM3_IRQn);
-	
-		//Trigger Needs to be set High for 10 us to send out a pulse
-	//PB5 - TIM3_CH2 - AF2
-	RCC->APB1ENR |= 0x02;
-	TIM3->PSC = 16 - 1; 
-	TIM3->ARR = 40000 - 1;
-	TIM3->CCMR1 = 0x06000; /* set PWM mode1 */
-	TIM3->CCR2 = 39990; //((TIM3->ARR+1)*90.f/100);
-	TIM3->CCER |= 0x10; /* enable CH2 compare mode */
-	TIM3->CNT = 0; /* clear counter */
-	TIM3->CR1 = 1; /* enable TIM5 */
-	
-	//ECHO pin Needs capture the edge 
-	//PB6 - TIM4_CH1 - AF2
-	RCC->APB1ENR |= 4;
-	TIM4->PSC = 16 - 1; 
-	TIM4->ARR = 10000000 - 1;
-	TIM4->CCMR1 = 0x01; /* set to toggle on match */
-	TIM4->CCR1 = 0;
-	TIM4->CCER |= 0x0B; /* enable CH1 compare mode and sets to caputre as an input on both edges */
-	TIM4->CNT = 0; /* clear counter */
-	TIM4->CR1 = 1; /* enable TIM5 */
 }

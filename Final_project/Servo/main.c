@@ -18,22 +18,23 @@ int i;
 int main(void) {
 	TIM_GPIO();
 	TIM1_setup();
+	Timer6_Init();
 	
 	while(1){
 		    // Set duty cycle for 90 degrees (1.5 ms pulse width)
 		//TIM1->CCR2 = i; // Adjust this value for different angles
 for(int i = 0; i < 1000000; i ++){}
 	
-        TIM1->CCR2 = 1000;
-				TIM1->CCR1 = 1000;
-			  TIM1->CCR3 = 1000;
+        Eye_Move_To(1000); // left
+				Eyelid_Move_To(1500); // open
+			  Tongue_Move_To(500); // Right
 	
 	
 	for(int i = 0; i < 1000000; i ++){}
 	
-        TIM1->CCR2 = 2000;
-				TIM1->CCR1 = 2000;
-				TIM1->CCR3 = 2000;
+        Eye_Move_To(1800);
+				Eyelid_Move_To(2570); //closed
+				Tongue_Move_To(2500); // Left
 		
 	}
 	

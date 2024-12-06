@@ -7,7 +7,7 @@ int main(void){
 	Timer7_Init();
 	__enable_irq();
 	
-	Play_Tone_4();
+	Play_Tone_3();
 	
 	while(1){
 		

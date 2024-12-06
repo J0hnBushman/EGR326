@@ -25,7 +25,25 @@ Description: 	Servo header file
 #define T1C2_PUPDR    (T1C2_PORT->PUPDR)
 #define T1C2_AFR    	(T1C2_PORT->AFR[T1C2_AF])
 
+#define upper_bound   2000
+#define lower_bound   1000
+
 void TIM_GPIO(void);
 void TIM1_setup(void);
+
+void Eye_Move_To(uint32_t position);
+void Eyelid_Move_To(uint32_t position);
+void Tongue_Move_To(uint32_t position);
+
+void Timer6_Init(void);
+void TIM6_DAC_IRQHandler(void);
+
+void TIM1_CH1_Enable(void);
+void TIM1_CH2_Enable(void);
+void TIM1_CH3_Enable(void);
+
+void TIM1_CH1_Disable(void);
+void TIM1_CH2_Disable(void);
+void TIM1_CH3_Disable(void);
 
 #endif

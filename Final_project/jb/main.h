@@ -30,6 +30,8 @@
 #include "Flash_Access.h"
 #include "sevenSeg.h"
 #include "health_bar.h"
+#include "Piezo.h"
+#include <stdbool.h>
 
 
 /*******************************************************************************/
@@ -51,6 +53,8 @@
 #define ExpDead				10
 #define ExpFeeding		11
 
+#define An_Expression_State (ExpContent || ExpHappy || ExpHungry || ExpSleepy || ExpDead || ExpFeeding)
+
 //EXPRESSION
 #define content 	 0
 #define happy 	 	 1
@@ -64,6 +68,7 @@
 #define Y_MSB(X)        (((X & 0xF0)>>4)+'0')
 #define LSB(X)          ((X & 0x0F)+'0')
 #define SLAVE_ADDR      0x68
+#define EEPROM_SLAVE_ADDR 0x50
 #define SECONDS_ADDR    0x00
 #define MINUTES_ADDR    0x01
 #define HOURS_ADDR      0x02
@@ -71,6 +76,14 @@
 #define MONTH_ADDR      0x05
 #define YEAR_ADDR       0x06
 #define DAY_ADDR        0x0D
+
+
+// USED FOR EEPROM | 8 BITS PER MEM ADDRESS
+#define MEMORY_1		0x08
+#define MEMORY_2		0x10
+#define MEMORY_3		0x18
+
+// I2C1_byteWrite(EEPROM_SLAVE_ADDR, MEMORY_1 , health);
 
 /*******************************************************************************/
 //                           USER STRUCT DEFINITIONS
@@ -93,6 +106,17 @@ void Read_Date(void);
 void Read_Time(void);
 /// @brief just some menu screens
 void MENU_SCREENS(void);
+
+/// @brief initialize the watchdog timer
+void WDT_init(void);
+
+void WDT_reset(void);
+
+/// @brief function just to store health in the EEPROM
+void Store_Current_Health(void);
+
+/// @brief fucntion just to retrieve health from the EEPROM
+void Retrieve_Health(void);
 
 /*******************************************************************************/
 /*******************************************************************************/
